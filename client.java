@@ -117,7 +117,7 @@ class CLientWorker implements Runnable {
         System.out.println("Client `" + this.id + "` started @ !" + start + ", Time Remaining : " + (duration - (System.currentTimeMillis() - start)) + " MS");
         outputStream.println(chunk);
         outputStream.flush();
-        if (this.msgCount++ % 10 == 0) {
+        if (++this.msgCount % 10 == 0) {
           Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the os alive
         }
         else if (delayBetweenChunks > 0) {
