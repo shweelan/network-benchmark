@@ -1,23 +1,105 @@
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 
 class Config {
-  public static final String host = "localhost";
-  public static final int port = 2912;
-  public static final int clientsCount = 100;//00;
-  public static final int chunkSize = 1024;
-  public static final long delayBetweenChunks = 1; // Milliseconds
-  public static final long duration = 1000 * 30; // Milliseconds
+  static String host = "localhost";
+  static int port = 2912;
+  static int clientsCount = 10; // num of threads
+  static int chunkSize = 16; // bytes
+  static long delayBetweenChunks = 0; // Milliseconds
+  static long duration = 1000 * 10; // Milliseconds
+  static String chunk = null;
   // TODO use args as config
+
+  public static void print() {
+    System.out.println("HOST : " + host);
+    System.out.println("PORT : " + port);
+    System.out.println("CLIENTS COUNT : " + clientsCount);
+    System.out.println("CHUNK SIZE : " + chunkSize);
+    System.out.println("DELAY BETWEEN CHUNKS : " + delayBetweenChunks);
+    System.out.println("DURATION : " + duration / 1000); // Seconds
+  }
+
+  public static void handleCLArgs(String args[]) throws Exception {
+    for (int i = 0, j = 1; i < args.length - 1; i += 2, j += 2) {
+      switch (args[i]) {
+        case "-host" :
+        case "-h" :
+          host = args[j];
+          break;
+
+        case "-port" :
+        case "-p" :
+          port = Integer.parseInt(args[j]);
+          break;
+
+        case "-clientscount" :
+        case "-cc" :
+          clientsCount = Integer.parseInt(args[j]);
+          break;
+
+        case "-chunksize" :
+        case "-cs" :
+          chunkSize = Integer.parseInt(args[j]);
+          break;
+
+        case "-chunkdelay" :
+        case "-cd" :
+          delayBetweenChunks = Integer.parseInt(args[j]);
+          break;
+
+        case "-duration" :
+        case "-d" :
+          duration = Integer.parseInt(args[j]) * 1000; // Milliseconds
+          break;
+      }
+    }
+
+  }
+
+  public static String getHost() {
+    return host;
+  }
+
+  public static int getPort() {
+    return port;
+  }
+
+  public static int getClientsCount() {
+    return clientsCount;
+  }
+
+  public static int getChunkSize() {
+    return chunkSize;
+  }
+
+  public static long getDelayBetweenChunks() {
+    return delayBetweenChunks;
+  }
+
+  public static long getDuration() {
+    return duration;
+  }
+
+  public static String getChunk() {
+    if (chunk == null) {
+      char[] data = new char[chunkSize];
+      Arrays.fill(data, 'S');
+      chunk = new String(data);
+    }
+    return chunk;
+  }
 }
 
 class CLientWorker implements Runnable {
   private Socket socket;
   private String id;
+  private long msgCount = 0;
 
   public CLientWorker() throws Exception {
-    this.socket = new Socket(Config.host, Config.port);
+    this.socket = new Socket(Config.getHost(), Config.getPort());
     this.id = this.socket.getInetAddress() + ":" + String.valueOf(this.socket.getLocalPort());
     System.out.println("CLient `" + this.id + "` connected!");
   }
@@ -28,14 +110,18 @@ class CLientWorker implements Runnable {
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       //BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
       // TODO chunk size, and delays between chunks
-      String chunk = "FUCK";
-      int i = 0;
-      while(System.currentTimeMillis() < start + Config.duration) {
-        System.out.println("Client `" + this.id + "` started @ !" + start + ", Time Remaining : " + (Config.duration - (System.currentTimeMillis() - start)) + " MS");
+      String chunk = Config.getChunk();
+      long duration = Config.getDuration();
+      long delayBetweenChunks = Config.getDelayBetweenChunks();
+      while(System.currentTimeMillis() < start + duration) {
+        System.out.println("Client `" + this.id + "` started @ !" + start + ", Time Remaining : " + (duration - (System.currentTimeMillis() - start)) + " MS");
         outputStream.println(chunk);
         outputStream.flush();
-        if (i++ % 10 == 0) {
-          Thread.sleep(Config.delayBetweenChunks);
+        if (this.msgCount++ % 10 == 0) {
+          Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the os alive
+        }
+        else if (delayBetweenChunks > 0) {
+          Thread.sleep(delayBetweenChunks);
         }
       }
       outputStream.println("bye");
@@ -57,8 +143,11 @@ class Client {
   public static long chunksReceived = 0;
   */
   public static void main(String args[]) throws Exception {
+    Config.handleCLArgs(args);
+    Config.print();
+
     int i = 0;
-    while(i++ < Config.clientsCount) {
+    while(i++ < Config.getClientsCount()) {
       new Thread(new CLientWorker()).start();
     }
   }
