@@ -11,7 +11,6 @@ class Config {
   static long delayBetweenChunks = 0; // Milliseconds
   static long duration = 1000 * 10; // Milliseconds
   static String chunk = null;
-  // TODO use args as config
 
   public static void print() {
     System.out.println("HOST : " + host);
@@ -109,16 +108,15 @@ class CLientWorker implements Runnable {
       long start = System.currentTimeMillis();
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       //BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-      // TODO chunk size, and delays between chunks
       String chunk = Config.getChunk();
       long duration = Config.getDuration();
       long delayBetweenChunks = Config.getDelayBetweenChunks();
       while(System.currentTimeMillis() < start + duration) {
-        System.out.println("Client `" + this.id + "` started @ !" + start + ", Time Remaining : " + (duration - (System.currentTimeMillis() - start)) + " MS");
+        System.out.println("Client `" + this.id + "` started @ !" + start + ", Time Remaining : " + (duration - (System.currentTimeMillis() - start)) + " MS!");
         outputStream.println(chunk);
         outputStream.flush();
-        if (++this.msgCount % 10 == 0) {
-          Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the os alive
+        if (++this.msgCount % 5 == 0) {
+          Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the OS alive
         }
         else if (delayBetweenChunks > 0) {
           Thread.sleep(delayBetweenChunks);
@@ -129,6 +127,8 @@ class CLientWorker implements Runnable {
       //inputStream.close();
       outputStream.close();
       this.socket.close();
+      // TODO more informatic statistics
+      System.out.println("Client `" + this.id + "` sent " + this.msgCount + " messages!");
       System.out.println("Client `" + this.id + "` disconnected!");
     } catch (Exception e) {
       System.out.println(e);
@@ -138,7 +138,7 @@ class CLientWorker implements Runnable {
 
 
 class Client {
-  /* TODO counters
+  /* TODO more informatic statistics
   public static long chunksSent = 0;
   public static long chunksReceived = 0;
   */
