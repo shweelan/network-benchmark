@@ -108,31 +108,34 @@ class CLientWorker implements Runnable {
       long delayBetweenChunks = Config.getDelayBetweenChunks();
       long currentTs;
       long endTs = this.startTs + duration;
-      while((currentTs = System.currentTimeMillis()) < endTs) {
-        String id = this.id + '_' + String.valueOf(++this.msgCount);
-        Message msg = new Message(currentTs, id, chunk);
-        outputStream.println(msg.toString());
+      try {
+        while((currentTs = System.currentTimeMillis()) < endTs) {
+          String id = this.id + '_' + String.valueOf(++this.msgCount);
+          Message msg = new Message(currentTs, id, chunk);
+          outputStream.println(msg.toString());
+          outputStream.flush();
+          if (this.msgCount % 250 == 0) {
+            System.out.println("Client `" + this.id + "` Started @ !" + this.startTs + ", Messages Sent : " + msgCount + ", Time Remaining : " + (endTs - currentTs) + " MS!");
+          }
+          if (this.msgCount % 5 == 0) {
+            Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the OS alive
+          }
+          else if (delayBetweenChunks > 0) {
+            Thread.sleep(delayBetweenChunks);
+          }
+        }
+        outputStream.println("bye");
         outputStream.flush();
-        if (this.msgCount % 250 == 0) {
-          System.out.println("Client `" + this.id + "` Started @ !" + this.startTs + ", Messages Sent : " + msgCount + ", Time Remaining : " + (endTs - currentTs) + " MS!");
-        }
-        if (this.msgCount % 5 == 0) {
-          Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the OS alive
-        }
-        else if (delayBetweenChunks > 0) {
-          Thread.sleep(delayBetweenChunks);
-        }
       }
-      outputStream.println("bye");
-      outputStream.flush();
-      Thread.sleep(100);
-      //inputStream.close();
-      outputStream.close();
-      this.socket.close(); // Socket will be closed by server
-      // TODO more informatic statistics
-      System.out.println("Client `" + this.id + "` sent " + this.msgCount + " messages!");
-      System.out.println("Client `" + this.id + "` disconnected!");
-    } catch (Exception e) {
+      finally {
+        outputStream.close();
+        this.socket.close();
+        // TODO more informatic statistics
+        System.out.println("Client `" + this.id + "` sent " + this.msgCount + " messages!");
+        System.out.println("Client `" + this.id + "` disconnected!");
+      }
+    }
+    catch (Exception e) {
       System.out.println(e);
     }
   }
