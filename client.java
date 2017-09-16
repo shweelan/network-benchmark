@@ -1,6 +1,9 @@
+package nbm.client;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import nbm.message.*;
 
 
 class Config {
@@ -81,41 +84,39 @@ class Config {
   public static long getDuration() {
     return duration;
   }
-
-  public static String getChunk() {
-    if (chunk == null) {
-      char[] data = new char[chunkSize];
-      Arrays.fill(data, 'S');
-      chunk = new String(data);
-    }
-    return chunk;
-  }
 }
 
 class CLientWorker implements Runnable {
   private Socket socket;
   private String id;
+  private long startTs;
   private long msgCount = 0;
 
-  public CLientWorker() throws Exception {
+  public CLientWorker(long startTs) throws Exception {
     this.socket = new Socket(Config.getHost(), Config.getPort());
     this.id = this.socket.getInetAddress() + ":" + String.valueOf(this.socket.getLocalPort());
+    this.startTs = startTs;
     System.out.println("CLient `" + this.id + "` connected!");
   }
 
   public void run() {
     try {
-      long start = System.currentTimeMillis();
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       //BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-      String chunk = Config.getChunk();
+      String chunk = Message.getChunk(Config.getChunkSize(), 'S');
       long duration = Config.getDuration();
       long delayBetweenChunks = Config.getDelayBetweenChunks();
-      while(System.currentTimeMillis() < start + duration) {
-        System.out.println("Client `" + this.id + "` started @ !" + start + ", Time Remaining : " + (duration - (System.currentTimeMillis() - start)) + " MS!");
-        outputStream.println(chunk);
+      long currentTs;
+      long endTs = this.startTs + duration;
+      while((currentTs = System.currentTimeMillis()) < endTs) {
+        String id = this.id + '_' + String.valueOf(++this.msgCount);
+        Message msg = new Message(currentTs, id, chunk);
+        outputStream.println(msg.toString());
         outputStream.flush();
-        if (++this.msgCount % 5 == 0) {
+        if (this.msgCount % 250 == 0) {
+          System.out.println("Client `" + this.id + "` Started @ !" + this.startTs + ", Messages Sent : " + msgCount + ", Time Remaining : " + (endTs - currentTs) + " MS!");
+        }
+        if (this.msgCount % 5 == 0) {
           Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the OS alive
         }
         else if (delayBetweenChunks > 0) {
@@ -124,9 +125,10 @@ class CLientWorker implements Runnable {
       }
       outputStream.println("bye");
       outputStream.flush();
+      Thread.sleep(100);
       //inputStream.close();
       outputStream.close();
-      this.socket.close();
+      this.socket.close(); // Socket will be closed by server
       // TODO more informatic statistics
       System.out.println("Client `" + this.id + "` sent " + this.msgCount + " messages!");
       System.out.println("Client `" + this.id + "` disconnected!");
@@ -147,8 +149,9 @@ class Client {
     Config.print();
 
     int i = 0;
+    long start = System.currentTimeMillis();
     while(i++ < Config.getClientsCount()) {
-      new Thread(new CLientWorker()).start();
+      new Thread(new CLientWorker(start)).start();
     }
   }
 }

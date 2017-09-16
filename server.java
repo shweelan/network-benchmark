@@ -1,5 +1,8 @@
+package nbm.server;
+
 import java.net.*;
 import java.io.*;
+import nbm.message.*;
 
 
 class ServerWorker implements Runnable {
@@ -13,15 +16,15 @@ class ServerWorker implements Runnable {
   }
 
   public void run() {
+    String inputLine = "";
     try {
       BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-      String inputLine;
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       while ((inputLine = inputStream.readLine()) != null) {
-        System.out.println("Message from `" + this.id + "` : " + inputLine);
-        System.out.println("Message to `" + this.id + "` : " + inputLine);
-        outputStream.println(inputLine);
-        outputStream.flush();
+//        System.out.println("Message from `" + this.id + "` : " + inputLine);
+//        System.out.println("Message to `" + this.id + "` : " + inputLine);
+        //outputStream.println(inputLine);
+        //outputStream.flush();
         if (inputLine.equals("bye")) {
           break;
         }
@@ -31,7 +34,8 @@ class ServerWorker implements Runnable {
       this.socket.close();
       System.out.println("Connection `" + this.id + "` disconnected!");
     } catch (IOException e) {
-      System.out.println(e);
+      System.out.println("Last Message from `" + this.id + "` : " + inputLine);
+      e.printStackTrace();
     }
   }
 }
