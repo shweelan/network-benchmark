@@ -92,15 +92,15 @@ class CLientWorker implements Runnable {
   private long startTs;
   private long msgCount = 0;
 
-  public CLientWorker(long startTs) throws Exception {
-    this.socket = new Socket(Config.getHost(), Config.getPort());
-    this.id = this.socket.getInetAddress() + ":" + String.valueOf(this.socket.getLocalPort());
+  public CLientWorker(long startTs) {
     this.startTs = startTs;
     System.out.println("CLient `" + this.id + "` connected!");
   }
 
   public void run() {
     try {
+      this.socket = new Socket(Config.getHost(), Config.getPort());
+      this.id = this.socket.getInetAddress() + ":" + String.valueOf(this.socket.getLocalPort());
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
       String chunk = Message.getChunk(Config.getChunkSize(), 'S');
