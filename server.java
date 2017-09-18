@@ -16,16 +16,14 @@ class ServerWorker implements Runnable {
   }
 
   public void run() {
-    String inputLine = "";
     try {
       BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       try {
+        String inputLine;
         while ((inputLine = inputStream.readLine()) != null) {
-  //        System.out.println("Message from `" + this.id + "` : " + inputLine);
-  //        System.out.println("Message to `" + this.id + "` : " + inputLine);
-          //outputStream.println(inputLine);
-          //outputStream.flush();
+          outputStream.println(inputLine);
+          outputStream.flush();
           if (inputLine.equals("bye")) {
             break;
           }
@@ -38,7 +36,6 @@ class ServerWorker implements Runnable {
         System.out.println("Connection `" + this.id + "` disconnected!");
       }
     } catch (IOException e) {
-      System.out.println("Last Message from `" + this.id + "` : " + inputLine);
       e.printStackTrace();
     }
   }

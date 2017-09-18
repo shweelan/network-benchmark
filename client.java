@@ -102,7 +102,7 @@ class CLientWorker implements Runnable {
   public void run() {
     try {
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
-      //BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+      BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
       String chunk = Message.getChunk(Config.getChunkSize(), 'S');
       long duration = Config.getDuration();
       long delayBetweenChunks = Config.getDelayBetweenChunks();
@@ -123,11 +123,16 @@ class CLientWorker implements Runnable {
           else if (delayBetweenChunks > 0) {
             Thread.sleep(delayBetweenChunks);
           }
+          // ignoring the input to protect the OS from freezing
+          while (inputStream.ready()) {
+            inputStream.read();
+          }
         }
         outputStream.println("bye");
         outputStream.flush();
       }
       finally {
+        inputStream.close();
         outputStream.close();
         this.socket.close();
         // TODO more informatic statistics
