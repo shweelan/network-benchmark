@@ -10,52 +10,55 @@ public class Message {
   private long ts;
   private String id;
   private String body;
-  private String inRespTo = null;
+  private long originalTs = 0; // read only, not serializable
 
-  public Message(long ts, String id, String body, String inRespTo) {
-    this.ts = ts;
+  public Message(String id, String body) {
+    this.ts = System.currentTimeMillis();
     this.id = id;
     this.body = body;
-    if (inRespTo != null) {
-      this.inRespTo = inRespTo;
-    }
   }
 
-  public Message(long ts, String id, String body) {
-    this(ts, id, body, null);
+  public Message(String id, int bodySize) {
+    this(id, getChunk(bodySize, CHAR));
   }
 
-  public Message(long ts, String id, int bodySize, String inRespTo) {
-    this(ts, id, getChunk(bodySize, CHAR), inRespTo);
-  }
-
-  public Message(long ts, String id, int chunkSize) {
-    this(ts, id, chunkSize, null);
-  }
-
-  public Message(String msg) {
-    this.fromString(msg);
-  }
-
-  public void fromString(String str) {
-    String[] result = str.split(DELIMETER);
-    this.ts = Integer.parseInt(result[0]);
+  public Message(String msg) { // parse from string
+    String[] result = msg.split(DELIMETER);
+    this.ts = System.currentTimeMillis();
+    this.originalTs = Long.parseLong(result[0]);
     this.id = result[1];
     this.body = result[2];
-    if (result.length > 3) {
-      this.inRespTo = result[3];
-    }
+  }
+
+  public long getTs() {
+    return this.ts;
+  }
+
+  public long getOriginalTs() {
+    return this.originalTs;
+  }
+
+  public String getId() {
+    return this.id;
+  }
+
+  public void getId(String id) {
+    this.id = id;
+  }
+
+  public String getBody() {
+    return this.body;
+  }
+
+  public void setBody(String body) {
+    this.body = body;
   }
 
   public String toString() {
-    int size = (inRespTo != null) ? 4 : 3;
-    String[] list = new String[size];
+    String[] list = new String[3];
     list[0] = String.valueOf(this.ts);
     list[1] = this.id;
     list[2] = this.body;
-    if (inRespTo != null) {
-      list[3] = this.inRespTo;
-    }
     String str = String.join(DELIMETER, list);
     return str;
   }

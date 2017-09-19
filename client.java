@@ -7,13 +7,13 @@ import nbm.message.*;
 
 
 class Config {
-  static String host = "localhost";
-  static int port = 2912;
-  static int clientsCount = 10; // num of threads
-  static int chunkSize = 16; // bytes
-  static long delayBetweenChunks = 0; // Milliseconds
-  static long duration = 1000 * 10; // Milliseconds
-  static String chunk = null;
+  private static String host = "localhost";
+  private static int port = 2912;
+  private static int clientsCount = 10; // num of threads
+  private static int chunkSize = 16; // bytes
+  private static long delayBetweenChunks = 0; // Milliseconds
+  private static long duration = 1000 * 10; // Milliseconds
+  private static boolean useDownlink = false;
 
   public static void print() {
     System.out.println("HOST : " + host);
@@ -22,39 +22,45 @@ class Config {
     System.out.println("CHUNK SIZE : " + chunkSize);
     System.out.println("DELAY BETWEEN CHUNKS : " + delayBetweenChunks);
     System.out.println("DURATION : " + duration / 1000); // Seconds
+    System.out.println("USE DOWNLINK : " + useDownlink);
   }
 
   public static void handleCLArgs(String args[]) throws Exception {
-    for (int i = 0, j = 1; i < args.length - 1; i += 2, j += 2) {
+    for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
         case "-host" :
         case "-h" :
-          host = args[j];
+          host = args[++i];
           break;
 
         case "-port" :
         case "-p" :
-          port = Integer.parseInt(args[j]);
+          port = Integer.parseInt(args[++i]);
           break;
 
         case "-clientscount" :
         case "-cc" :
-          clientsCount = Integer.parseInt(args[j]);
+          clientsCount = Integer.parseInt(args[++i]);
           break;
 
         case "-chunksize" :
         case "-cs" :
-          chunkSize = Integer.parseInt(args[j]);
+          chunkSize = Integer.parseInt(args[++i]);
           break;
 
         case "-chunkdelay" :
         case "-cd" :
-          delayBetweenChunks = Integer.parseInt(args[j]);
+          delayBetweenChunks = Integer.parseInt(args[++i]);
           break;
 
         case "-duration" :
         case "-d" :
-          duration = Integer.parseInt(args[j]) * 1000; // Milliseconds
+          duration = Integer.parseInt(args[++i]) * 1000; // Milliseconds
+          break;
+
+        case "-usedownlink" :
+        case "-udl" :
+          useDownlink = true;
           break;
       }
     }
@@ -84,6 +90,10 @@ class Config {
   public static long getDuration() {
     return duration;
   }
+
+  public static boolean getUseDownlink() {
+    return useDownlink;
+  }
 }
 
 class CLientWorker implements Runnable {
@@ -103,7 +113,7 @@ class CLientWorker implements Runnable {
       System.out.println("CLient `" + this.id + "` connected!");
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-      String chunk = Message.getChunk(Config.getChunkSize(), 'S');
+      String chunk = ((Config.getUseDownlink()) ? "[-usedownlink]" : "") + Message.getChunk(Config.getChunkSize(), 'S');
       long duration = Config.getDuration();
       long delayBetweenChunks = Config.getDelayBetweenChunks();
       long currentTs;
@@ -111,7 +121,7 @@ class CLientWorker implements Runnable {
       try {
         while((currentTs = System.currentTimeMillis()) < endTs) {
           String id = this.id + '_' + String.valueOf(++this.msgCount);
-          Message msg = new Message(currentTs, id, chunk);
+          Message msg = new Message(id, chunk);
           outputStream.println(msg.toString());
           outputStream.flush();
           if (this.msgCount % 250 == 0) {

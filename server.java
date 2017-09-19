@@ -22,11 +22,13 @@ class ServerWorker implements Runnable {
       try {
         String inputLine;
         while ((inputLine = inputStream.readLine()) != null) {
-          // TODO Parse Message and check if reply is needed
-          outputStream.println(inputLine);
-          outputStream.flush();
           if (inputLine.equals("bye")) {
             break;
+          }
+          Message msg = new Message(inputLine);
+          if(msg.getBody().startsWith("[-usedownlink]")) {
+            outputStream.println(inputLine);
+            outputStream.flush();
           }
         }
       }
