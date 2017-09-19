@@ -26,3 +26,10 @@ Many options come with the client
 -chunkdelay, -cd to specify the delay after each message is sent (in Milliseconds).
 
 -duration, -d to specify the test duration (in Seconds), NOTE: the duration is per test, not per connection!
+
+-usedownlink, -udl to use use downlink
+
+
+To run client with multiple tests, first create a file that will contain command line args (for example, check clients_example.config)
+
+        $ java -classpath ./build/ nbm.main.Main clients_example.config
