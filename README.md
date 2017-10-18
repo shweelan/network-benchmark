@@ -14,7 +14,7 @@ To run the client
 
 Many options come with the client
 
--hosts, -h to specify the host(s), comma separated hosts and ports, i,e "12.29.19.90:2912, localhost:1229" must be enclosed by(").
+-hosts, -h to specify the host(s), comma separated hosts and ports, i.e "12.29.19.90:2912, localhost:1229" must be enclosed by(").
 
 -port, -p to specify the default port.
 
