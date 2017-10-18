@@ -7,8 +7,8 @@ import nbm.message.*;
 
 
 class Config {
-  private static String host = "localhost";
-  private static int port = 2912;
+  private static ArrayList<String> hosts = new ArrayList<String>(Arrays.asList("localhost"));
+  private static int port = 2912; // default port
   private static int clientsCount = 10; // num of threads
   private static int chunkSize = 16; // bytes
   private static long delayBetweenChunks = 0; // Milliseconds
@@ -16,7 +16,7 @@ class Config {
   private static boolean useDownlink = false;
 
   public static void print() {
-    System.out.println("HOST : " + host);
+    System.out.println("HOSTS : " + hosts);
     System.out.println("PORT : " + port);
     System.out.println("CLIENTS COUNT : " + clientsCount);
     System.out.println("CHUNK SIZE : " + chunkSize);
@@ -28,9 +28,15 @@ class Config {
   public static void handleCLArgs(String args[]) throws Exception {
     for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
-        case "-host" :
+        case "-hosts" :
         case "-h" :
-          host = args[++i];
+          String[] _hosts = args[++i].split(",");
+          if (_hosts.length > 0) {
+            hosts.clear();
+            for (int j = 0; j < _hosts.length; j++) {
+              hosts.add(_hosts[j].trim());
+            }
+          }
           break;
 
         case "-port" :
@@ -67,8 +73,8 @@ class Config {
 
   }
 
-  public static String getHost() {
-    return host;
+  public static ArrayList<String> getHosts() {
+    return hosts;
   }
 
   public static int getPort() {
@@ -96,21 +102,30 @@ class Config {
   }
 }
 
-class CLientWorker implements Runnable {
+class ClientWorker implements Runnable {
+  private int port;
+  private String host;
   private Socket socket;
   private String id;
   private long startTs;
   private long msgCount = 0;
 
-  public CLientWorker(long startTs) {
+  public ClientWorker(long startTs, String host) {
     this.startTs = startTs;
+    this.port = Config.getPort();
+    String[] split = host.split(":");
+    if (split.length > 1) {
+      this.port = Integer.parseInt(split[1].trim());
+    }
+    this.host = split[0].trim();
   }
 
   public void run() {
     try {
-      this.socket = new Socket(Config.getHost(), Config.getPort());
+      // TODO wait for server (retries)
+      this.socket = new Socket(this.host, this.port);
       this.id = this.socket.getInetAddress() + ":" + String.valueOf(this.socket.getLocalPort());
-      System.out.println("CLient `" + this.id + "` connected!");
+      System.out.println("CLient `" + this.id + "` connected to `" + this.host + ":" + this.port + "` !");
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
       String chunk = ((Config.getUseDownlink()) ? "[-usedownlink]" : "") + Message.getChunk(Config.getChunkSize(), 'S');
@@ -168,8 +183,14 @@ class Client {
 
     int i = 0;
     long start = System.currentTimeMillis();
+    // Distribute the load on hosts
+    int hostId = 0;
+    ArrayList<String> hosts = Config.getHosts();
     while(i++ < Config.getClientsCount()) {
-      new Thread(new CLientWorker(start)).start();
+      new Thread(new ClientWorker(start, hosts.get(hostId))).start();
+      if (++hostId == hosts.size()) {
+        hostId = 0;
+      }
     }
   }
 }

@@ -46,7 +46,8 @@ class ServerWorker implements Runnable {
 
 class Server {
   public static void main(String args[]) throws Exception {
-    ServerSocket server = new ServerSocket(2912);
+    int port = (args.length > 0 ? Integer.parseInt(args[0]) : 2912);
+    ServerSocket server = new ServerSocket(port);
     System.out.println("Server listening on port " + server.getLocalPort());
     while (true) {
       Socket socket = server.accept();
