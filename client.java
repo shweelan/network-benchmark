@@ -140,7 +140,7 @@ class ClientWorker implements Runnable {
           outputStream.println(msg.toString());
           outputStream.flush();
           if (this.msgCount % 250 == 0) {
-            System.out.println("Client `" + this.id + "` Started @ !" + this.startTs + ", Messages Sent : " + msgCount + ", Time Remaining : " + (endTs - currentTs) + " MS!");
+            System.out.println("Client `" + this.id + "` Started @ " + this.startTs + ", Messages Sent : " + msgCount + ", Time Remaining : " + (endTs - currentTs) + " MS!");
           }
           if (this.msgCount % 5 == 0) {
             Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the OS alive

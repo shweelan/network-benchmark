@@ -35,8 +35,10 @@ class Main {
     String javaExec = System.getProperty("java.home") + "/bin/java";
     String classPath = ((URLClassLoader) Thread.currentThread().getContextClassLoader()).getURLs()[0].getFile();
 
-    ArrayList<Process> localServersProcesses = new ArrayList<Process>();
     // Start the servers
+    ArrayList<Process> localServersProcesses = new ArrayList<Process>();
+    HashMap<String, List<String>> remoteServersProcesses = new HashMap<String, List<String>>();
+
     for (String serverConfig : servers) {
       int port = 0;
       String[] split = serverConfig.split(":");
@@ -47,7 +49,7 @@ class Main {
       final InetAddress addr = InetAddress.getByName(host);
       Process serverProcess = null;
       if (addr.isAnyLocalAddress() || addr.isLoopbackAddress()) {
-        // TODO run localserver
+        // run local server
         List<String> command = new ArrayList<String>();
         command.add(javaExec);
         command.add("-classpath");
@@ -61,7 +63,52 @@ class Main {
         localServersProcesses.add(serverProcess);
       }
       else {
-        // TODO ssh and run
+        // run remote server
+        List<String> command = new ArrayList<String>();
+        // NOTE you need to have jvm installed, project cloned /root, and the project must be compiled using make command
+        // NOTE you need to have ssh on port 1229 (forced because testing on virtual machine)
+        // TODO configurable sshing [username, ssh port, other flags]
+        command.add("ssh");
+        command.add("root@" + host);
+        command.add("-p");
+        command.add("1229");
+        command.add("cd");
+        command.add("/root/network_benchmark"); // TODO configurable working directory
+        command.add(";");
+        command.add("nohup");
+        command.add("java");
+        command.add("-classpath");
+        command.add("build/");
+        command.add("nbm.server.Server");
+        if (port != 0) {
+          command.add(String.valueOf(port));
+        }
+        command.add(">>");
+        command.add("/tmp/" + port + "_out.log");
+        command.add("2>>");
+        command.add("/tmp/" + port + "_err.log");
+        command.add("<");
+        command.add("/dev/null");
+        command.add("&");
+        command.add("echo");
+        command.add("$!");
+        ProcessBuilder builder = new ProcessBuilder(command);
+        serverProcess = builder.start();
+        BufferedReader inputStream = new BufferedReader(new InputStreamReader(serverProcess.getInputStream()));
+        String inputLine = inputStream.readLine();
+        if (inputLine != null) {
+          try {
+            if (!remoteServersProcesses.containsKey(host)) {
+              remoteServersProcesses.put(host, new ArrayList<String>());
+            }
+            // parseInt to validate pid
+            remoteServersProcesses.get(host).add(String.valueOf(Integer.parseInt(inputLine)));
+          }
+          catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+        inputStream.close();
       }
     }
 
@@ -106,9 +153,22 @@ class Main {
       }
     }
 
-    // TODO kill the servers
+    // kill the servers
     for (Process localServerProcess : localServersProcesses) {
       localServerProcess.destroy();
+    }
+    for (String key : remoteServersProcesses.keySet()) {
+      List<String> command = new ArrayList<String>();
+      // NOTE you need to have ssh on port 1229 (forced because testing on virtual machine)
+      // TODO configurable sshing [username, ssh port, other flags]
+      command.add("ssh");
+      command.add("root@" + key);
+      command.add("-p");
+      command.add("1229");
+      command.add("kill");
+      command.add("-9");
+      command.addAll(remoteServersProcesses.get(key));
+      (new ProcessBuilder(command)).start();
     }
   }
 }
