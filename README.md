@@ -1,7 +1,6 @@
 To compile
 
-        $ rm -rf ./build/*
-        $ javac -d ./build/ *.java
+        $ make
 
 
 To run the server
@@ -15,9 +14,9 @@ To run the client
 
 Many options come with the client
 
--host, -h to specify the host.
+-hosts, -h to specify the host(s), comma separated hosts and ports, i,e "12.29.19.90:2912, localhost:1229".
 
--port, -p to specify the port.
+-port, -p to specify the default port.
 
 -clientscount, -cc to specify the number of clients to be connected to the server, NOTE: each client is a thread!
 
@@ -30,6 +29,7 @@ Many options come with the client
 -usedownlink, -udl to use use downlink
 
 
-To run client with multiple tests, first create a file that will contain command line args (for example, check clients_example.config)
+To run remote and local servers (remote servers must be accessible via ssh, have jvm installed, and the project cloned and compiled)
+To run client with multiple tests, first create a file that will contain command line args (for example, check start_conf_example.config)
 
-        $ java -classpath ./build/ nbm.main.Main clients_example.config
+        $ java -classpath ./build/ nbm.main.Main start_conf_example.config
