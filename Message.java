@@ -1,4 +1,4 @@
-package nbm.message;
+package nbm.common;
 
 import java.io.*;
 import java.util.*;

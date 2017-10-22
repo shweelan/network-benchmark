@@ -115,7 +115,8 @@ class Main {
     // Start the clients
     final String RES_PREFIX = "FINAL RESULT : ";
     BufferedWriter resWriter = new BufferedWriter(new FileWriter("final_result_" + System.currentTimeMillis() + ".csv", true));
-    resWriter.write("NumClients,Duration(Sec),MessageSize(Bytes),MessagesSent,Throughput(MegaBits/Sec)");
+    resWriter.write("NumClients,Duration(Sec),MessageSize(Bytes),MessagesSent,Throughput(MegaBits/Sec),");
+    resWriter.write("LatencyDruation(Sec),LatencyMessagesSent,MinLatency(MS),MaxLatency(MS),MedianLatency(MS),AverageLatency(MS)");
     resWriter.newLine();
     resWriter.flush();
     for (String clientConfig : clients) {

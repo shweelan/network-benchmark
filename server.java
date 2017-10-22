@@ -2,7 +2,7 @@ package nbm.server;
 
 import java.net.*;
 import java.io.*;
-import nbm.message.*;
+import nbm.common.*;
 
 
 class ServerWorker implements Runnable {
