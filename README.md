@@ -12,6 +12,7 @@ To run the client
 
         $ java -classpath ./build/ nbm.client.Client
 
+
 Many options come with the client
 
 -hosts, -h to specify the host(s), comma separated hosts and ports, i,e "12.29.19.90:2912, localhost:1229".
