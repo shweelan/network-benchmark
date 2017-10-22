@@ -10,7 +10,7 @@ class Config {
   private static ArrayList<String> hosts = new ArrayList<String>(Arrays.asList("localhost"));
   private static int port = 2912; // default port
   private static int clientsCount = 10; // num of threads
-  private static int chunkSize = 16; // bytes
+  private static int chunkSize = 1024; // bytes
   private static long delayBetweenChunks = 0; // Milliseconds
   private static long duration = 1000 * 10; // Milliseconds
   private static boolean useDownlink = false;
@@ -102,16 +102,77 @@ class Config {
   }
 }
 
+
+class Result {
+  private String threadName;
+  private long initTs;
+  private long startTs;
+  private long endTs;
+  private long msgSent;
+
+  public Result (String threadName, long initTs, long startTs, long endTs, long msgSent) {
+    this.threadName = threadName;
+    this.initTs = initTs;
+    this.startTs = startTs;
+    this.endTs = endTs;
+    this.msgSent = msgSent;
+  }
+
+  public String getThreadName() {
+    return threadName;
+  }
+
+  public long getInitTs() {
+    return initTs;
+  }
+
+  public long getStartTs() {
+    return startTs;
+  }
+
+  public long getEndTs() {
+    return endTs;
+  }
+
+  public long getMsgSent() {
+    return msgSent;
+  }
+
+  public String toString() {
+    String[] list = new String[5];
+    list[0] = "Thread " + threadName;
+    list[1] = "Initiated at " + String.valueOf(initTs);
+    list[2] = "Started at " + String.valueOf(startTs);
+    list[3] = "Ended at " + String.valueOf(endTs);
+    list[4] = "Sent " + String.valueOf(msgSent) + " Messages";
+    String str = String.join(", ", list);
+    return str;
+  }
+
+}
+
+class Results {
+  private static List<Result> results = Collections.synchronizedList(new ArrayList<Result>());
+
+  public static void add(Result data) {
+    results.add(data);
+  }
+
+  public static List<Result> all () {
+    return results;
+  }
+}
+
 class ClientWorker implements Runnable {
   private int port;
   private String host;
   private Socket socket;
   private String id;
-  private long startTs;
+  private long initTs;
   private long msgCount = 0;
 
-  public ClientWorker(long startTs, String host) {
-    this.startTs = startTs;
+  public ClientWorker(long initTs, String host) {
+    this.initTs = initTs;
     this.port = Config.getPort();
     String[] split = host.split(":");
     if (split.length > 1) {
@@ -121,31 +182,35 @@ class ClientWorker implements Runnable {
   }
 
   public void run() {
+    long startTs = System.currentTimeMillis();
+    long currentTs = startTs;
     try {
       // TODO wait for server (retries)
       this.socket = new Socket(this.host, this.port);
       this.id = this.socket.getInetAddress() + ":" + String.valueOf(this.socket.getLocalPort());
-      System.out.println("CLient `" + this.id + "` connected to `" + this.host + ":" + this.port + "` !");
+      System.out.println("CLient `" + this.id + "` connected to `" + this.host + ":" + this.port + "`!");
       PrintStream outputStream = new PrintStream(this.socket.getOutputStream());
       BufferedReader inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
       String chunk = ((Config.getUseDownlink()) ? "[-usedownlink]" : "") + Message.getChunk(Config.getChunkSize(), 'S');
       long duration = Config.getDuration();
       long delayBetweenChunks = Config.getDelayBetweenChunks();
-      long currentTs;
-      long endTs = this.startTs + duration;
+      long endTs = this.initTs + duration;
       try {
         while((currentTs = System.currentTimeMillis()) < endTs) {
           String id = this.id + '_' + String.valueOf(++this.msgCount);
           Message msg = new Message(id, chunk);
           outputStream.println(msg.toString());
           outputStream.flush();
+          /*
           if (this.msgCount % 250 == 0) {
-            System.out.println("Client `" + this.id + "` Started @ " + this.startTs + ", Messages Sent : " + msgCount + ", Time Remaining : " + (endTs - currentTs) + " MS!");
+            System.out.println("Client `" + this.id + "` Started @ " + this.initTs + ", Messages Sent : " + msgCount + ", Time Remaining : " + (endTs - currentTs) + " MS!");
           }
-          if (this.msgCount % 5 == 0) {
-            Thread.sleep(Math.max(1, delayBetweenChunks)); // keep the OS alive
-          }
-          else if (delayBetweenChunks > 0) {
+          //*/
+          /* TODO discus it with prof, how to ensure uniformal resources (cpu time) distribution with other threads
+          Thread.sleep(1);
+          //*/
+
+          if (delayBetweenChunks > 0) {
             Thread.sleep(delayBetweenChunks);
           }
           // ignoring the input to protect the OS from freezing
@@ -163,6 +228,7 @@ class ClientWorker implements Runnable {
         // TODO more informatic statistics
         System.out.println("Client `" + this.id + "` sent " + this.msgCount + " messages!");
         System.out.println("Client `" + this.id + "` disconnected!");
+        Results.add(new Result(Thread.currentThread().getName(), this.initTs, startTs, currentTs, this.msgCount));
       }
     }
     catch (Exception e) {
@@ -180,17 +246,30 @@ class Client {
   public static void main(String args[]) throws Exception {
     Config.handleCLArgs(args);
     Config.print();
-
     int i = 0;
     long start = System.currentTimeMillis();
     // Distribute the load on hosts
     int hostId = 0;
     ArrayList<String> hosts = Config.getHosts();
-    while(i++ < Config.getClientsCount()) {
-      new Thread(new ClientWorker(start, hosts.get(hostId))).start();
+    Thread[] threads = new Thread[Config.getClientsCount()];
+    while(i < Config.getClientsCount()) {
+      threads[i] = new Thread(new ClientWorker(start, hosts.get(hostId)), "#" + i);
+      threads[i].start();
       if (++hostId == hosts.size()) {
         hostId = 0;
       }
+      i++;
     }
+    for (Thread thread : threads) {
+      thread.join();
+    }
+    //long end = System.currentTimeMillis();
+    long msgsSent = 0;
+    for (Result r : Results.all()) {
+      msgsSent += r.getMsgSent();
+      System.out.println(r);
+    }
+    float throughput = ((8 * Config.getChunkSize() * msgsSent) / (float) (Config.getDuration() / 1000)) / (float) (1024 * 1024); // 1 byte = 8 bit
+    System.out.println("FINAL RESULT : " + Config.getClientsCount() + "," + Config.getDuration() / 1000 + "," + Config.getChunkSize() + "," + msgsSent + "," + throughput);
   }
 }

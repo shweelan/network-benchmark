@@ -113,6 +113,11 @@ class Main {
     }
 
     // Start the clients
+    final String RES_PREFIX = "FINAL RESULT : ";
+    BufferedWriter resWriter = new BufferedWriter(new FileWriter("final_result_" + System.currentTimeMillis() + ".csv", true));
+    resWriter.write("NumClients,Duration(Sec),MessageSize(Bytes),MessagesSent,Throughput(MegaBits/Sec)");
+    resWriter.newLine();
+    resWriter.flush();
     for (String clientConfig : clients) {
       Process clientProcess = null;
       BufferedReader inputStream = null;
@@ -139,6 +144,11 @@ class Main {
         String inputLine;
         while((inputLine = inputStream.readLine()) != null) {
           System.out.println("From client process : " + inputLine);
+          if (inputLine.startsWith(RES_PREFIX)) {
+            resWriter.write(inputLine.substring(RES_PREFIX.length()));
+            resWriter.newLine();
+            resWriter.flush();
+          }
         }
       }
       catch(IOException e)
@@ -152,6 +162,7 @@ class Main {
         }
       }
     }
+    resWriter.close();
 
     // kill the servers
     for (Process localServerProcess : localServersProcesses) {
