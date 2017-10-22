@@ -225,7 +225,6 @@ class ClientWorker implements Runnable {
         inputStream.close();
         outputStream.close();
         this.socket.close();
-        // TODO more informatic statistics
         System.out.println("Client `" + this.id + "` sent " + this.msgCount + " messages!");
         System.out.println("Client `" + this.id + "` disconnected!");
         Results.add(new Result(Thread.currentThread().getName(), this.initTs, startTs, currentTs, this.msgCount));
@@ -239,10 +238,6 @@ class ClientWorker implements Runnable {
 
 
 class Client {
-  /* TODO more informatic statistics
-  public static long chunksSent = 0;
-  public static long chunksReceived = 0;
-  */
   public static void main(String args[]) throws Exception {
     Config.handleCLArgs(args);
     Config.print();
