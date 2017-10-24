@@ -263,7 +263,7 @@ class ClientWorker implements Runnable {
       long minLatency = latencies.get(0);
       long maxLatency = latencies.get(latencies.size() - 1);
       int mid = latencies.size() / 2;
-      long medianLatency = latencies.get(mid) + ((latencies.size() % 2 == 0) ? latencies.get(mid + 1): 0);
+      long medianLatency = latencies.get(mid) + ((latencies.size() % 2 == 0) ? latencies.get(mid - 1): 0);
       long sum = 0;
       for(Long latency : latencies) {
         sum += latency;
@@ -359,7 +359,7 @@ class Client {
     Collections.sort(medianLatencies);
     // NOTE this is not overall median; it is median of median.
     int mid = medianLatencies.size() / 2;
-    long medianLatency = medianLatencies.get(mid) + ((medianLatencies.size() % 2 == 0) ? medianLatencies.get(mid + 1): 0);
+    long medianLatency = medianLatencies.get(mid) + ((medianLatencies.size() % 2 == 0) ? medianLatencies.get(mid - 1): 0);
     float sum = 0;
     for(Float avgLatency : averageLatencies) {
       sum += avgLatency;
