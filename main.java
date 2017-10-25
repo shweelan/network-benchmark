@@ -9,6 +9,7 @@ import java.util.*;
 class Main {
   // REGEX from https://stackoverflow.com/questions/5946471/splitting-at-space-if-not-between-quotes
   private static final String CLIENT_CONF_REGEX = "[ ]+(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
+  private static final String ALIVE_SERVER_CONF_ID = new String("ALIVE_SERVER:");
   private static final String SERVER_CONF_ID = new String("SERVER:");
   private static final String CLIENT_CONF_ID = new String("CLIENT:");
 
@@ -19,9 +20,13 @@ class Main {
     String configLine;
     ArrayList<String> servers = new ArrayList<String>();
     ArrayList<String> clients = new ArrayList<String>();
+    ArrayList<String> aliveServers = new ArrayList<String>();
     while((configLine = fileStream.readLine()) != null) {
       if (configLine.toUpperCase().startsWith(SERVER_CONF_ID)) {
         servers.add(configLine.substring(SERVER_CONF_ID.length()).trim());
+      }
+      else if (configLine.toUpperCase().startsWith(ALIVE_SERVER_CONF_ID)) {
+        aliveServers.add(configLine.substring(ALIVE_SERVER_CONF_ID.length()).trim());
       }
       else if (configLine.toUpperCase().startsWith(CLIENT_CONF_ID)) {
         clients.add(configLine.substring(CLIENT_CONF_ID.length()).trim());
@@ -69,11 +74,11 @@ class Main {
         // NOTE you need to have ssh on port 1229 (forced because testing on virtual machine)
         // TODO configurable sshing [username, ssh port, other flags]
         command.add("ssh");
-        command.add("root@" + host);
+        command.add("ec2-user@" + host);
         command.add("-p");
         command.add("1229");
         command.add("cd");
-        command.add("/root/network_benchmark"); // TODO configurable working directory
+        command.add("/home/ec2-user/network_benchmark"); // TODO configurable working directory
         command.add(";");
         command.add("nohup");
         command.add("java");
@@ -119,6 +124,19 @@ class Main {
     resWriter.write("LatencyDruation(Sec),LatencyMessagesSent,MinLatency(MS),MaxLatency(MS),MedianLatency(MS),AverageLatency(MS)");
     resWriter.newLine();
     resWriter.flush();
+    String availableHosts = new String("");
+    for (String server : servers) {
+      if (availableHosts.length() > 0) {
+        availableHosts += ",";
+      }
+      availableHosts += server;
+    }
+    for (String aliveServer : aliveServers) {
+      if (availableHosts.length() > 0) {
+        availableHosts += ",";
+      }
+      availableHosts += aliveServer;
+    }
     for (String clientConfig : clients) {
       Process clientProcess = null;
       BufferedReader inputStream = null;
@@ -135,9 +153,9 @@ class Main {
             useAvailableHosts = false;
           }
         }
-        if (useAvailableHosts) {
+        if (useAvailableHosts && availableHosts.length() > 0) {
           command.add("-h");
-          command.add(String.join(", ", servers));
+          command.add(availableHosts);
         }
         ProcessBuilder builder = new ProcessBuilder(command);
         clientProcess = builder.start();
@@ -174,7 +192,7 @@ class Main {
       // NOTE you need to have ssh on port 1229 (forced because testing on virtual machine)
       // TODO configurable sshing [username, ssh port, other flags]
       command.add("ssh");
-      command.add("root@" + key);
+      command.add("ec2-user@" + key);
       command.add("-p");
       command.add("1229");
       command.add("kill");
