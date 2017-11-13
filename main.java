@@ -8,7 +8,7 @@ import java.util.*;
 
 class Main {
   // REGEX from https://stackoverflow.com/questions/5946471/splitting-at-space-if-not-between-quotes
-  private static final String CLIENT_CONF_REGEX = "[ ]+(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
+  private static final String CLIENT_CONF_REGEX = new String("[ ]+(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
   private static final String ALIVE_SERVER_CONF_ID = new String("ALIVE_SERVER:");
   private static final String SERVER_CONF_ID = new String("SERVER:");
   private static final String CLIENT_CONF_ID = new String("CLIENT:");
