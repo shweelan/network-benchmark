@@ -71,12 +71,12 @@ class Main {
         // run remote server
         List<String> command = new ArrayList<String>();
         // NOTE you need to have jvm installed, project cloned /root, and the project must be compiled using make command
-        // NOTE you need to have ssh on port 1229 (forced because testing on virtual machine)
+        // NOTE you need to have ssh on port 22 (forced because testing on virtual machine)
         // TODO configurable sshing [username, ssh port, other flags]
         command.add("ssh");
         command.add("ec2-user@" + host);
         command.add("-p");
-        command.add("1229");
+        command.add("22");
         command.add("cd");
         command.add("/home/ec2-user/network_benchmark"); // TODO configurable working directory
         command.add(";");
@@ -119,8 +119,9 @@ class Main {
 
     // Start the clients
     final String RES_PREFIX = "FINAL RESULT : ";
-    BufferedWriter resWriter = new BufferedWriter(new FileWriter("final_result_" + System.currentTimeMillis() + ".csv", true));
-    resWriter.write("NumClients,Duration(Sec),MessageSize(Bytes),MessagesSent,Throughput(MegaBits/Sec),");
+    long now = System.currentTimeMillis();
+    BufferedWriter resWriter = new BufferedWriter(new FileWriter("final_result_" + now + ".csv", true));
+    resWriter.write("TestNumber,NumClients,Duration(Sec),MessageSize(Bytes),MessagesSent,Throughput(MegaBits/Sec),");
     resWriter.write("LatencyDruation(Sec),LatencyMessagesSent,MinLatency(MS),MaxLatency(MS),MedianLatency(MS),AverageLatency(MS)");
     resWriter.newLine();
     resWriter.flush();
@@ -137,6 +138,7 @@ class Main {
       }
       availableHosts += aliveServer;
     }
+    int clientIndex = 0;
     for (String clientConfig : clients) {
       Process clientProcess = null;
       BufferedReader inputStream = null;
@@ -145,6 +147,7 @@ class Main {
         command.add(javaExec);
         command.add("-classpath");
         command.add(classPath);
+        command.add("-agentlib:hprof=cpu=samples,depth=25,thread=y,interval=10,file=final_result_cpu_" + now + "_" + ++clientIndex + ".log");
         command.add("nbm.client.Client");
         boolean useAvailableHosts = true;
         for (String conf : clientConfig.split(CLIENT_CONF_REGEX)) {
@@ -164,7 +167,7 @@ class Main {
         while((inputLine = inputStream.readLine()) != null) {
           System.out.println("From client process : " + inputLine);
           if (inputLine.startsWith(RES_PREFIX)) {
-            resWriter.write(inputLine.substring(RES_PREFIX.length()));
+            resWriter.write(clientIndex + "," + inputLine.substring(RES_PREFIX.length()));
             resWriter.newLine();
             resWriter.flush();
           }
@@ -189,12 +192,12 @@ class Main {
     }
     for (String key : remoteServersProcesses.keySet()) {
       List<String> command = new ArrayList<String>();
-      // NOTE you need to have ssh on port 1229 (forced because testing on virtual machine)
+      // NOTE you need to have ssh on port 22 (forced because testing on virtual machine)
       // TODO configurable sshing [username, ssh port, other flags]
       command.add("ssh");
       command.add("ec2-user@" + key);
       command.add("-p");
-      command.add("1229");
+      command.add("22");
       command.add("kill");
       command.add("-9");
       command.addAll(remoteServersProcesses.get(key));
