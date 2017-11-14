@@ -1,0 +1,798 @@
+JAVA PROFILE 1.0.1, created Tue Nov 14 18:17:41 2017
+
+Copyright (c) 2003, 2005, Oracle and/or its affiliates. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+  - Neither the name of Oracle nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Header for -agentlib:hprof (or -Xrunhprof) ASCII Output (JDK 5.0 JVMTI based)
+
+WARNING!  This file format is under development, and is subject to
+change without notice.
+
+This file contains the following types of records:
+
+THREAD START
+THREAD END      mark the lifetime of Java threads
+
+TRACE           represents a Java stack trace.  Each trace consists
+                of a series of stack frames.  Other records refer to
+                TRACEs to identify (1) where object allocations have
+                taken place, (2) the frames in which GC roots were
+                found, and (3) frequently executed methods.
+
+HEAP DUMP       is a complete snapshot of all live objects in the Java
+                heap.  Following distinctions are made:
+
+                ROOT    root set as determined by GC
+                CLS     classes 
+                OBJ     instances
+                ARR     arrays
+
+SITES           is a sorted list of allocation sites.  This identifies
+                the most heavily allocated object types, and the TRACE
+                at which those allocations occurred.
+
+CPU SAMPLES     is a statistical profile of program execution.  The VM
+                periodically samples all running threads, and assigns
+                a quantum to active TRACEs in those threads.  Entries
+                in this record are TRACEs ranked by the percentage of
+                total quanta they consumed; top-ranked TRACEs are
+                typically hot spots in the program.
+
+CPU TIME        is a profile of program execution obtained by measuring
+                the time spent in individual methods (excluding the time
+                spent in callees), as well as by counting the number of
+                times each method is called. Entries in this record are
+                TRACEs ranked by the percentage of total CPU time. The
+                "count" field indicates the number of times each TRACE 
+                is invoked.
+
+MONITOR TIME    is a profile of monitor contention obtained by measuring
+                the time spent by a thread waiting to enter a monitor.
+                Entries in this record are TRACEs ranked by the percentage
+                of total monitor contention time and a brief description
+                of the monitor.  The "count" field indicates the number of 
+                times the monitor was contended at that TRACE.
+
+MONITOR DUMP    is a complete snapshot of all the monitors and threads in 
+                the System.
+
+HEAP DUMP, SITES, CPU SAMPLES|TIME and MONITOR DUMP|TIME records are generated 
+at program exit.  They can also be obtained during program execution by typing 
+Ctrl-\ (on Solaris) or by typing Ctrl-Break (on Win32).
+
+--------
+
+THREAD START (obj=5000018c, id = 200001, name="main", group="main")
+THREAD START (obj=500001bd, id = 200004, name="#0", group="main")
+THREAD START (obj=500001be, id = 200005, name="#1", group="main")
+THREAD END (id = 200004)
+THREAD END (id = 200005)
+THREAD END (id = 200001)
+THREAD START (obj=5000020f, id = 200006, name="DestroyJavaVM", group="main")
+THREAD END (id = 200006)
+TRACE 300162: (thread=200004)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:282)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.PrintStream.write(PrintStream.java:526)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300163: (thread=200005)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:282)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.PrintStream.write(PrintStream.java:526)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300111: (thread=200005)
+	java.net.SocketInputStream.socketRead0(SocketInputStream.java:Unknown line)
+	java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	java.net.SocketInputStream.read(SocketInputStream.java:171)
+	java.net.SocketInputStream.read(SocketInputStream.java:141)
+	sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	java.io.InputStreamReader.read(InputStreamReader.java:184)
+	java.io.BufferedReader.fill(BufferedReader.java:161)
+	java.io.BufferedReader.readLine(BufferedReader.java:324)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300123: (thread=200004)
+	java.util.regex.Matcher.find(Matcher.java:637)
+	java.util.regex.Pattern.split(Pattern.java:1209)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300164: (thread=200005)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(StreamEncoder.java:291)
+	sun.nio.cs.StreamEncoder.flushBuffer(StreamEncoder.java:104)
+	java.io.OutputStreamWriter.flushBuffer(OutputStreamWriter.java:185)
+	java.io.PrintStream.write(PrintStream.java:527)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300166: (thread=200005)
+	sun.nio.cs.UTF_8.updatePositions(UTF_8.java:77)
+	sun.nio.cs.UTF_8.access$200(UTF_8.java:57)
+	sun.nio.cs.UTF_8$Encoder.encodeArrayLoop(UTF_8.java:636)
+	sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:691)
+	java.nio.charset.CharsetEncoder.encode(CharsetEncoder.java:579)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:271)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.BufferedWriter.write(BufferedWriter.java:230)
+	java.io.Writer.write(Writer.java:157)
+	java.io.PrintStream.write(PrintStream.java:525)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300104: (thread=200004)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:282)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.PrintStream.write(PrintStream.java:526)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300120: (thread=200004)
+	java.net.SocketInputStream.socketRead0(SocketInputStream.java:Unknown line)
+	java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	java.net.SocketInputStream.read(SocketInputStream.java:171)
+	java.net.SocketInputStream.read(SocketInputStream.java:141)
+	sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	java.io.InputStreamReader.read(InputStreamReader.java:184)
+	java.io.BufferedReader.fill(BufferedReader.java:161)
+	java.io.BufferedReader.readLine(BufferedReader.java:324)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300124: (thread=200005)
+	java.util.regex.Matcher.find(Matcher.java:637)
+	java.util.regex.Pattern.split(Pattern.java:1209)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300172: (thread=200004)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(StreamEncoder.java:291)
+	sun.nio.cs.StreamEncoder.flushBuffer(StreamEncoder.java:104)
+	java.io.OutputStreamWriter.flushBuffer(OutputStreamWriter.java:185)
+	java.io.PrintStream.write(PrintStream.java:527)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300118: (thread=200004)
+	java.lang.System.currentTimeMillis(System.java:Unknown line)
+	nbm.client.ClientWorker.run(client.java:252)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300165: (thread=200004)
+	sun.nio.cs.UTF_8.updatePositions(UTF_8.java:77)
+	sun.nio.cs.UTF_8.access$200(UTF_8.java:57)
+	sun.nio.cs.UTF_8$Encoder.encodeArrayLoop(UTF_8.java:636)
+	sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:691)
+	java.nio.charset.CharsetEncoder.encode(CharsetEncoder.java:579)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:271)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.BufferedWriter.write(BufferedWriter.java:230)
+	java.io.Writer.write(Writer.java:157)
+	java.io.PrintStream.write(PrintStream.java:525)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300105: (thread=200005)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:282)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.PrintStream.write(PrintStream.java:526)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300169: (thread=200004)
+	java.net.PlainSocketImpl.socketAvailable(PlainSocketImpl.java:Unknown line)
+	java.net.AbstractPlainSocketImpl.available(AbstractPlainSocketImpl.java:490)
+	java.net.SocketInputStream.available(SocketInputStream.java:259)
+	sun.nio.cs.StreamDecoder.inReady(StreamDecoder.java:363)
+	sun.nio.cs.StreamDecoder.implReady(StreamDecoder.java:371)
+	sun.nio.cs.StreamDecoder.ready(StreamDecoder.java:185)
+	java.io.InputStreamReader.ready(InputStreamReader.java:195)
+	java.io.BufferedReader.ready(BufferedReader.java:463)
+	nbm.client.ClientWorker.run(client.java:300)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300170: (thread=200004)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(StreamEncoder.java:291)
+	sun.nio.cs.StreamEncoder.flushBuffer(StreamEncoder.java:104)
+	java.io.OutputStreamWriter.flushBuffer(OutputStreamWriter.java:185)
+	java.io.PrintStream.newLine(PrintStream.java:546)
+	java.io.PrintStream.println(PrintStream.java:807)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300171: (thread=200005)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(StreamEncoder.java:291)
+	sun.nio.cs.StreamEncoder.flushBuffer(StreamEncoder.java:104)
+	java.io.OutputStreamWriter.flushBuffer(OutputStreamWriter.java:185)
+	java.io.PrintStream.newLine(PrintStream.java:546)
+	java.io.PrintStream.println(PrintStream.java:807)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300109: (thread=200005)
+	java.lang.System.currentTimeMillis(System.java:Unknown line)
+	nbm.client.ClientWorker.run(client.java:252)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300167: (thread=200005)
+	java.net.PlainSocketImpl.socketAvailable(PlainSocketImpl.java:Unknown line)
+	java.net.AbstractPlainSocketImpl.available(AbstractPlainSocketImpl.java:490)
+	java.net.SocketInputStream.available(SocketInputStream.java:259)
+	sun.nio.cs.StreamDecoder.inReady(StreamDecoder.java:363)
+	sun.nio.cs.StreamDecoder.implReady(StreamDecoder.java:371)
+	sun.nio.cs.StreamDecoder.ready(StreamDecoder.java:185)
+	java.io.InputStreamReader.ready(InputStreamReader.java:195)
+	java.io.BufferedReader.ready(BufferedReader.java:463)
+	nbm.client.ClientWorker.run(client.java:300)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300134: (thread=200004)
+	java.util.regex.Pattern.split(Pattern.java:1241)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300142: (thread=200005)
+	nbm.common.Message.toString(Message.java:62)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300121: (thread=200005)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300112: (thread=200004)
+	java.lang.String.<init>(String.java:207)
+	java.lang.String.substring(String.java:1969)
+	java.lang.String.subSequence(String.java:2003)
+	java.util.regex.Pattern.split(Pattern.java:1233)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300122: (thread=200004)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300132: (thread=200005)
+	java.util.regex.Pattern.split(Pattern.java:1241)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300173: (thread=200005)
+	nbm.common.Message.toString(Message.java:62)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300102: (thread=200004)
+	sun.nio.cs.UTF_8$Encoder.encodeArrayLoop(UTF_8.java:595)
+	sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:691)
+	java.nio.charset.CharsetEncoder.encode(CharsetEncoder.java:579)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:271)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.BufferedWriter.write(BufferedWriter.java:230)
+	java.io.Writer.write(Writer.java:157)
+	java.io.PrintStream.write(PrintStream.java:525)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300107: (thread=200005)
+	sun.nio.cs.UTF_8$Decoder.decodeArrayLoop(UTF_8.java:234)
+	sun.nio.cs.UTF_8$Decoder.decodeLoop(UTF_8.java:412)
+	java.nio.charset.CharsetDecoder.decode(CharsetDecoder.java:579)
+	sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:318)
+	sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	java.io.InputStreamReader.read(InputStreamReader.java:184)
+	java.io.BufferedReader.fill(BufferedReader.java:161)
+	java.io.BufferedReader.readLine(BufferedReader.java:324)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300113: (thread=200004)
+	java.lang.StringBuffer.append(StringBuffer.java:367)
+	java.io.BufferedReader.readLine(BufferedReader.java:370)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300114: (thread=200005)
+	java.lang.String.<init>(String.java:207)
+	java.lang.String.substring(String.java:1969)
+	java.lang.String.subSequence(String.java:2003)
+	java.util.regex.Pattern.split(Pattern.java:1233)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300115: (thread=200004)
+	java.lang.StringBuffer.append(StringBuffer.java:367)
+	java.io.BufferedReader.readLine(BufferedReader.java:358)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300116: (thread=200005)
+	java.lang.String.<init>(String.java:207)
+	java.lang.StringBuilder.toString(StringBuilder.java:407)
+	java.util.StringJoiner.toString(StringJoiner.java:165)
+	java.lang.String.join(String.java:2458)
+	nbm.common.Message.toString(Message.java:62)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300127: (thread=200005)
+	java.util.regex.Pattern.split(Pattern.java:1233)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300129: (thread=200005)
+	java.io.BufferedReader.readLine(BufferedReader.java:370)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300131: (thread=200004)
+	java.io.BufferedReader.readLine(BufferedReader.java:358)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300133: (thread=200004)
+	java.net.PlainSocketImpl.socketAvailable(PlainSocketImpl.java:Unknown line)
+	java.net.AbstractPlainSocketImpl.available(AbstractPlainSocketImpl.java:490)
+	java.net.SocketInputStream.available(SocketInputStream.java:259)
+	sun.nio.cs.StreamDecoder.inReady(StreamDecoder.java:363)
+	sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:324)
+	sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	java.io.InputStreamReader.read(InputStreamReader.java:184)
+	java.io.BufferedReader.fill(BufferedReader.java:161)
+	java.io.BufferedReader.readLine(BufferedReader.java:324)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300136: (thread=200005)
+	java.net.PlainSocketImpl.socketAvailable(PlainSocketImpl.java:Unknown line)
+	java.net.AbstractPlainSocketImpl.available(AbstractPlainSocketImpl.java:490)
+	java.net.SocketInputStream.available(SocketInputStream.java:259)
+	sun.nio.cs.StreamDecoder.inReady(StreamDecoder.java:363)
+	sun.nio.cs.StreamDecoder.implReady(StreamDecoder.java:371)
+	sun.nio.cs.StreamDecoder.ready(StreamDecoder.java:185)
+	java.io.InputStreamReader.ready(InputStreamReader.java:195)
+	java.io.BufferedReader.ready(BufferedReader.java:463)
+	nbm.client.ClientWorker.run(client.java:250)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300137: (thread=200004)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300143: (thread=200004)
+	nbm.common.Message.toString(Message.java:62)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300145: (thread=200005)
+	java.io.BufferedReader.readLine(BufferedReader.java:359)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300168: (thread=200004)
+	nbm.common.Message.toString(Message.java:62)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300175: (thread=200005)
+	java.util.Arrays.copyOfRange(Arrays.java:3664)
+	java.lang.String.<init>(String.java:207)
+	java.lang.StringBuilder.toString(StringBuilder.java:407)
+	java.util.StringJoiner.toString(StringJoiner.java:165)
+	java.lang.String.join(String.java:2458)
+	nbm.common.Message.toString(Message.java:62)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300176: (thread=200005)
+	java.util.Arrays.copyOf(Arrays.java:3332)
+	java.lang.AbstractStringBuilder.ensureCapacityInternal(AbstractStringBuilder.java:124)
+	java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:448)
+	java.lang.StringBuilder.append(StringBuilder.java:136)
+	java.lang.StringBuilder.append(StringBuilder.java:76)
+	java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:484)
+	java.lang.StringBuilder.append(StringBuilder.java:166)
+	java.util.StringJoiner.add(StringJoiner.java:185)
+	java.lang.String.join(String.java:2456)
+	nbm.common.Message.toString(Message.java:62)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300042: (thread=200001)
+	java.lang.ClassLoader.findBootstrapClass(ClassLoader.java:Unknown line)
+	java.lang.ClassLoader.findBootstrapClassOrNull(ClassLoader.java:1015)
+	java.lang.ClassLoader.loadClass(ClassLoader.java:413)
+	java.lang.ClassLoader.loadClass(ClassLoader.java:411)
+	sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:335)
+	java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	nbm.client.Config.<clinit>(client.java:11)
+	nbm.client.Client.main(client.java:325)
+TRACE 300089: (thread=200004)
+	sun.misc.Unsafe.getObjectVolatile(Unsafe.java:Unknown line)
+	java.util.concurrent.ConcurrentHashMap.tabAt(ConcurrentHashMap.java:755)
+	java.util.concurrent.ConcurrentHashMap.putVal(ConcurrentHashMap.java:1018)
+	java.util.concurrent.ConcurrentHashMap.putIfAbsent(ConcurrentHashMap.java:1535)
+	java.lang.ClassLoader.checkCerts(ClassLoader.java:895)
+	java.lang.ClassLoader.preDefineClass(ClassLoader.java:668)
+	java.lang.ClassLoader.defineClass(ClassLoader.java:761)
+	java.security.SecureClassLoader.defineClass(SecureClassLoader.java:142)
+	java.net.URLClassLoader.defineClass(URLClassLoader.java:467)
+	java.net.URLClassLoader.access$100(URLClassLoader.java:73)
+	java.net.URLClassLoader$1.run(URLClassLoader.java:368)
+	java.net.URLClassLoader$1.run(URLClassLoader.java:362)
+	java.security.AccessController.doPrivileged(AccessController.java:Unknown line)
+	java.net.URLClassLoader.findClass(URLClassLoader.java:361)
+	java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:335)
+	java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	nbm.client.ClientWorker.run(client.java:235)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300103: (thread=200005)
+	sun.nio.cs.UTF_8$Encoder.encodeArrayLoop(UTF_8.java:595)
+	sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:691)
+	java.nio.charset.CharsetEncoder.encode(CharsetEncoder.java:579)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:271)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.BufferedWriter.write(BufferedWriter.java:230)
+	java.io.Writer.write(Writer.java:157)
+	java.io.PrintStream.write(PrintStream.java:525)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300106: (thread=200004)
+	java.nio.charset.CharsetDecoder.decode(CharsetDecoder.java:589)
+	sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:318)
+	sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	java.io.InputStreamReader.read(InputStreamReader.java:184)
+	java.io.BufferedReader.fill(BufferedReader.java:161)
+	java.io.BufferedReader.readLine(BufferedReader.java:324)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300108: (thread=200004)
+	sun.nio.cs.UTF_8$Decoder.decodeArrayLoop(UTF_8.java:234)
+	sun.nio.cs.UTF_8$Decoder.decodeLoop(UTF_8.java:412)
+	java.nio.charset.CharsetDecoder.decode(CharsetDecoder.java:579)
+	sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:318)
+	sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	java.io.InputStreamReader.read(InputStreamReader.java:184)
+	java.io.BufferedReader.fill(BufferedReader.java:161)
+	java.io.BufferedReader.readLine(BufferedReader.java:324)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300110: (thread=200004)
+	java.util.regex.Matcher.<init>(Matcher.java:225)
+	java.util.regex.Pattern.matcher(Pattern.java:1093)
+	java.util.regex.Pattern.split(Pattern.java:1206)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300117: (thread=200005)
+	java.lang.StringBuffer.append(StringBuffer.java:367)
+	java.io.BufferedReader.readLine(BufferedReader.java:358)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300119: (thread=200005)
+	java.lang.String.substring(String.java:1969)
+	java.lang.String.subSequence(String.java:2003)
+	java.util.regex.Pattern.split(Pattern.java:1233)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300125: (thread=200004)
+	java.util.Arrays.copyOfRange(Arrays.java:3664)
+	java.lang.StringBuffer.toString(StringBuffer.java:669)
+	java.io.BufferedReader.readLine(BufferedReader.java:359)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300126: (thread=200004)
+	nbm.client.ClientWorker.run(client.java:254)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300128: (thread=200004)
+	java.util.regex.Pattern.split(Pattern.java:1233)
+	java.lang.String.split(String.java:2380)
+	java.lang.String.split(String.java:2422)
+	nbm.common.Message.<init>(Message.java:26)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300130: (thread=200004)
+	java.util.HashMap.resize(HashMap.java:707)
+	java.util.HashMap.putVal(HashMap.java:663)
+	java.util.HashMap.put(HashMap.java:612)
+	nbm.client.ClientWorker.run(client.java:245)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300135: (thread=200005)
+	java.io.BufferedReader.readLine(BufferedReader.java:358)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300138: (thread=200005)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300139: (thread=200005)
+	nbm.client.ClientWorker.run(client.java:256)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300140: (thread=200004)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300141: (thread=200005)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(StreamEncoder.java:291)
+	sun.nio.cs.StreamEncoder.flushBuffer(StreamEncoder.java:104)
+	java.io.OutputStreamWriter.flushBuffer(OutputStreamWriter.java:185)
+	java.io.PrintStream.newLine(PrintStream.java:546)
+	java.io.PrintStream.println(PrintStream.java:807)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300144: (thread=200005)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300146: (thread=200004)
+	java.io.BufferedReader.readLine(BufferedReader.java:370)
+	java.io.BufferedReader.readLine(BufferedReader.java:389)
+	nbm.client.ClientWorker.run(client.java:251)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300147: (thread=200004)
+	nbm.client.ClientWorker.run(client.java:254)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300148: (thread=200005)
+	nbm.client.ClientWorker.run(client.java:253)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300149: (thread=200005)
+	sun.nio.cs.UTF_8.updatePositions(UTF_8.java:77)
+	sun.nio.cs.UTF_8.access$200(UTF_8.java:57)
+	sun.nio.cs.UTF_8$Encoder.encodeArrayLoop(UTF_8.java:636)
+	sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:691)
+	java.nio.charset.CharsetEncoder.encode(CharsetEncoder.java:579)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:271)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.BufferedWriter.write(BufferedWriter.java:230)
+	java.io.Writer.write(Writer.java:157)
+	java.io.PrintStream.write(PrintStream.java:525)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300150: (thread=200005)
+	java.net.SocketOutputStream.socketWrite0(SocketOutputStream.java:Unknown line)
+	java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:111)
+	java.net.SocketOutputStream.write(SocketOutputStream.java:155)
+	java.io.PrintStream.write(PrintStream.java:480)
+	sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(StreamEncoder.java:291)
+	sun.nio.cs.StreamEncoder.flushBuffer(StreamEncoder.java:104)
+	java.io.OutputStreamWriter.flushBuffer(OutputStreamWriter.java:185)
+	java.io.PrintStream.write(PrintStream.java:527)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:246)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300160: (thread=200004)
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.dtoa(FloatingDecimal.java:448)
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.access$100(FloatingDecimal.java:259)
+	sun.misc.FloatingDecimal.getBinaryToASCIIConverter(FloatingDecimal.java:1825)
+	sun.misc.FloatingDecimal.appendTo(FloatingDecimal.java:98)
+	java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:719)
+	java.lang.StringBuilder.append(StringBuilder.java:220)
+	nbm.client.ClientWorker.run(client.java:275)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300161: (thread=200005)
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.dtoa(FloatingDecimal.java:448)
+	sun.misc.FloatingDecimal$BinaryToASCIIBuffer.access$100(FloatingDecimal.java:259)
+	sun.misc.FloatingDecimal.getBinaryToASCIIConverter(FloatingDecimal.java:1825)
+	sun.misc.FloatingDecimal.appendTo(FloatingDecimal.java:98)
+	java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:719)
+	java.lang.StringBuilder.append(StringBuilder.java:220)
+	nbm.client.ClientWorker.run(client.java:275)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300174: (thread=200005)
+	sun.nio.cs.UTF_8$Encoder.encodeArrayLoop(UTF_8.java:602)
+	sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:691)
+	java.nio.charset.CharsetEncoder.encode(CharsetEncoder.java:579)
+	sun.nio.cs.StreamEncoder.implWrite(StreamEncoder.java:271)
+	sun.nio.cs.StreamEncoder.write(StreamEncoder.java:125)
+	java.io.OutputStreamWriter.write(OutputStreamWriter.java:207)
+	java.io.BufferedWriter.flushBuffer(BufferedWriter.java:129)
+	java.io.PrintStream.write(PrintStream.java:526)
+	java.io.PrintStream.print(PrintStream.java:669)
+	java.io.PrintStream.println(PrintStream.java:806)
+	nbm.client.ClientWorker.run(client.java:285)
+	java.lang.Thread.run(Thread.java:748)
+TRACE 300177: (thread=200005)
+	java.lang.ClassLoader$NativeLibrary.find(ClassLoader.java:Unknown line)
+	java.lang.ClassLoader.findNative(ClassLoader.java:1963)
+	java.net.PlainSocketImpl.socketClose0(PlainSocketImpl.java:Unknown line)
+	java.net.AbstractPlainSocketImpl.socketPreClose(AbstractPlainSocketImpl.java:693)
+	java.net.AbstractPlainSocketImpl.close(AbstractPlainSocketImpl.java:530)
+	java.net.SocksSocketImpl.close(SocksSocketImpl.java:1075)
+	java.net.Socket.close(Socket.java:1495)
+	java.net.SocketInputStream.close(SocketInputStream.java:273)
+	sun.nio.cs.StreamDecoder.implClose(StreamDecoder.java:378)
+	sun.nio.cs.StreamDecoder.close(StreamDecoder.java:193)
+	java.io.InputStreamReader.close(InputStreamReader.java:199)
+	java.io.BufferedReader.close(BufferedReader.java:525)
+	nbm.client.ClientWorker.run(client.java:308)
+	java.lang.Thread.run(Thread.java:748)
+CPU SAMPLES BEGIN (total = 2152) Tue Nov 14 18:17:52 2017
+rank   self  accum   count trace method
+   1 43.31% 43.31%     932 300162 java.net.SocketOutputStream.socketWrite0
+   2 42.80% 86.11%     921 300163 java.net.SocketOutputStream.socketWrite0
+   3  1.30% 87.41%      28 300111 java.net.SocketInputStream.socketRead0
+   4  0.98% 88.38%      21 300123 java.util.regex.Matcher.find
+   5  0.84% 89.22%      18 300164 java.net.SocketOutputStream.socketWrite0
+   6  0.74% 89.96%      16 300166 sun.nio.cs.UTF_8.updatePositions
+   7  0.65% 90.61%      14 300104 java.net.SocketOutputStream.socketWrite0
+   8  0.65% 91.26%      14 300120 java.net.SocketInputStream.socketRead0
+   9  0.65% 91.91%      14 300124 java.util.regex.Matcher.find
+  10  0.65% 92.57%      14 300172 java.net.SocketOutputStream.socketWrite0
+  11  0.56% 93.12%      12 300118 java.lang.System.currentTimeMillis
+  12  0.56% 93.68%      12 300165 sun.nio.cs.UTF_8.updatePositions
+  13  0.51% 94.19%      11 300105 java.net.SocketOutputStream.socketWrite0
+  14  0.42% 94.61%       9 300169 java.net.PlainSocketImpl.socketAvailable
+  15  0.42% 95.03%       9 300170 java.net.SocketOutputStream.socketWrite0
+  16  0.37% 95.40%       8 300171 java.net.SocketOutputStream.socketWrite0
+  17  0.28% 95.68%       6 300109 java.lang.System.currentTimeMillis
+  18  0.28% 95.96%       6 300167 java.net.PlainSocketImpl.socketAvailable
+  19  0.23% 96.19%       5 300134 java.util.regex.Pattern.split
+  20  0.23% 96.42%       5 300142 nbm.common.Message.toString
+  21  0.19% 96.61%       4 300121 nbm.client.ClientWorker.run
+  22  0.14% 96.75%       3 300112 java.lang.String.<init>
+  23  0.14% 96.89%       3 300122 nbm.client.ClientWorker.run
+  24  0.14% 97.03%       3 300132 java.util.regex.Pattern.split
+  25  0.14% 97.17%       3 300173 nbm.common.Message.toString
+  26  0.09% 97.26%       2 300102 sun.nio.cs.UTF_8$Encoder.encodeArrayLoop
+  27  0.09% 97.35%       2 300107 sun.nio.cs.UTF_8$Decoder.decodeArrayLoop
+  28  0.09% 97.44%       2 300113 java.lang.StringBuffer.append
+  29  0.09% 97.54%       2 300114 java.lang.String.<init>
+  30  0.09% 97.63%       2 300115 java.lang.StringBuffer.append
+  31  0.09% 97.72%       2 300116 java.lang.String.<init>
+  32  0.09% 97.82%       2 300127 java.util.regex.Pattern.split
+  33  0.09% 97.91%       2 300129 java.io.BufferedReader.readLine
+  34  0.09% 98.00%       2 300131 java.io.BufferedReader.readLine
+  35  0.09% 98.09%       2 300133 java.net.PlainSocketImpl.socketAvailable
+  36  0.09% 98.19%       2 300136 java.net.PlainSocketImpl.socketAvailable
+  37  0.09% 98.28%       2 300137 nbm.client.ClientWorker.run
+  38  0.09% 98.37%       2 300143 nbm.common.Message.toString
+  39  0.09% 98.47%       2 300145 java.io.BufferedReader.readLine
+  40  0.09% 98.56%       2 300168 nbm.common.Message.toString
+  41  0.09% 98.65%       2 300175 java.util.Arrays.copyOfRange
+  42  0.09% 98.75%       2 300176 java.util.Arrays.copyOf
+  43  0.05% 98.79%       1 300042 java.lang.ClassLoader.findBootstrapClass
+  44  0.05% 98.84%       1 300089 sun.misc.Unsafe.getObjectVolatile
+  45  0.05% 98.88%       1 300103 sun.nio.cs.UTF_8$Encoder.encodeArrayLoop
+  46  0.05% 98.93%       1 300106 java.nio.charset.CharsetDecoder.decode
+  47  0.05% 98.98%       1 300108 sun.nio.cs.UTF_8$Decoder.decodeArrayLoop
+  48  0.05% 99.02%       1 300110 java.util.regex.Matcher.<init>
+  49  0.05% 99.07%       1 300117 java.lang.StringBuffer.append
+  50  0.05% 99.12%       1 300119 java.lang.String.substring
+  51  0.05% 99.16%       1 300125 java.util.Arrays.copyOfRange
+  52  0.05% 99.21%       1 300126 nbm.client.ClientWorker.run
+  53  0.05% 99.26%       1 300128 java.util.regex.Pattern.split
+  54  0.05% 99.30%       1 300130 java.util.HashMap.resize
+  55  0.05% 99.35%       1 300135 java.io.BufferedReader.readLine
+  56  0.05% 99.40%       1 300138 nbm.client.ClientWorker.run
+  57  0.05% 99.44%       1 300139 nbm.client.ClientWorker.run
+  58  0.05% 99.49%       1 300140 nbm.client.ClientWorker.run
+  59  0.05% 99.54%       1 300141 java.net.SocketOutputStream.socketWrite0
+  60  0.05% 99.58%       1 300144 nbm.client.ClientWorker.run
+  61  0.05% 99.63%       1 300146 java.io.BufferedReader.readLine
+  62  0.05% 99.67%       1 300147 nbm.client.ClientWorker.run
+  63  0.05% 99.72%       1 300148 nbm.client.ClientWorker.run
+  64  0.05% 99.77%       1 300149 sun.nio.cs.UTF_8.updatePositions
+  65  0.05% 99.81%       1 300150 java.net.SocketOutputStream.socketWrite0
+  66  0.05% 99.86%       1 300160 sun.misc.FloatingDecimal$BinaryToASCIIBuffer.dtoa
+  67  0.05% 99.91%       1 300161 sun.misc.FloatingDecimal$BinaryToASCIIBuffer.dtoa
+  68  0.05% 99.95%       1 300174 sun.nio.cs.UTF_8$Encoder.encodeArrayLoop
+  69  0.05% 100.00%       1 300177 java.lang.ClassLoader$NativeLibrary.find
+CPU SAMPLES END
