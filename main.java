@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.URLClassLoader;
 import java.net.InetAddress;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 class Main {
@@ -12,6 +13,7 @@ class Main {
   private static final String ALIVE_SERVER_CONF_ID = new String("ALIVE_SERVER:");
   private static final String SERVER_CONF_ID = new String("SERVER:");
   private static final String CLIENT_CONF_ID = new String("CLIENT:");
+  private static final int CLIENT_PROCESS_TIMEOUT = 90; //SECONDS
 
   public static void main(String args[]) throws Exception {
     // read config file
@@ -142,6 +144,7 @@ class Main {
     for (String clientConfig : clients) {
       Process clientProcess = null;
       BufferedReader inputStream = null;
+      Thread thread = null;
       try {
         List<String> command = new ArrayList<String>();
         command.add(javaExec);
@@ -163,14 +166,33 @@ class Main {
         ProcessBuilder builder = new ProcessBuilder(command);
         clientProcess = builder.start();
         inputStream = new BufferedReader(new InputStreamReader(clientProcess.getInputStream()));
-        String inputLine;
-        while((inputLine = inputStream.readLine()) != null) {
-          System.out.println("From client process : " + inputLine);
-          if (inputLine.startsWith(RES_PREFIX)) {
-            resWriter.write(clientIndex + "," + inputLine.substring(RES_PREFIX.length()));
-            resWriter.newLine();
-            resWriter.flush();
+        final BufferedReader is = inputStream;
+        final int ci = clientIndex;
+        thread = new Thread(new Runnable() {
+          public void run() {
+            try {
+              String inputLine;
+              while((inputLine = is.readLine()) != null) {
+                System.out.println("From client process : " + inputLine);
+                if (inputLine.startsWith(RES_PREFIX)) {
+                  resWriter.write(ci + "," + inputLine.substring(RES_PREFIX.length()));
+                  resWriter.newLine();
+                  resWriter.flush();
+                }
+              }
+            }
+            catch (Exception e) {
+              e.printStackTrace();
+            }
           }
+        });
+        thread.start();
+        if (!clientProcess.waitFor(CLIENT_PROCESS_TIMEOUT, TimeUnit.SECONDS)) {
+          clientProcess.destroy();
+          inputStream.close();
+          resWriter.write(clientIndex + ",fail,fail,fail,fail,fail,fail,fail,fail,fail,fail,fail");
+          resWriter.newLine();
+          resWriter.flush();
         }
       }
       catch(IOException e)
