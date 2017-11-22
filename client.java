@@ -324,6 +324,11 @@ class Client {
   public static void main(String args[]) throws Exception {
     Config.handleCLArgs(args);
     Config.print();
+    System.out.print("CONFIG CSV : ");
+    System.out.print(Config.getClientsCount() + ",");
+    System.out.print(Config.getChunkSize() + ",");
+    System.out.print(Config.getDuration() / 1000 + ",");
+    System.out.println(Config.getLatencyDruation() / 1000);
     int i = 0;
     long start = System.currentTimeMillis();
     // Distribute the load on hosts
@@ -366,13 +371,9 @@ class Client {
     }
     float averageLatency = sum / averageLatencies.size();
     float throughput = ((8 * Config.getChunkSize() * msgSent) / (float) (Config.getDuration() / 1000)) / (float) (1024 * 1024); // 1 byte = 8 bit
-    System.out.print("FINAL RESULT : ");
-    System.out.print(Config.getClientsCount() + ",");
-    System.out.print(Config.getDuration() / 1000 + ",");
-    System.out.print(Config.getChunkSize() + ",");
+    System.out.print("FINAL RESULT CSV : ");
     System.out.print(msgSent + ",");
     System.out.print(throughput + ",");
-    System.out.print(Config.getLatencyDruation() / 1000 + ",");
     System.out.print(latencyMsgSent + ",");
     System.out.print(minLatency+ ",");
     System.out.print(maxLatency+ ",");

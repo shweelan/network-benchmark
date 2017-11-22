@@ -120,11 +120,12 @@ class Main {
     }
 
     // Start the clients
-    final String RES_PREFIX = "FINAL RESULT : ";
+    final String CONF_PREFIX = "CONFIG CSV : ";
+    final String RES_PREFIX = "FINAL RESULT CSV : ";
     long now = System.currentTimeMillis();
     BufferedWriter resWriter = new BufferedWriter(new FileWriter("final_result_" + now + ".csv", true));
-    resWriter.write("TestNumber,NumClients,Duration(Sec),MessageSize(Bytes),MessagesSent,Throughput(MegaBits/Sec),");
-    resWriter.write("LatencyDruation(Sec),LatencyMessagesSent,MinLatency(MS),MaxLatency(MS),MedianLatency(MS),AverageLatency(MS)");
+    resWriter.write("TestNumber,NumClients,MessageSize(Bytes),Duration(Sec),LatencyDruation(Sec),MessagesSent,Throughput(MegaBits/Sec),");
+    resWriter.write("LatencyMessagesSent,MinLatency(MS),MaxLatency(MS),MedianLatency(MS),AverageLatency(MS)");
     resWriter.newLine();
     resWriter.flush();
     String availableHosts = new String("");
@@ -150,7 +151,8 @@ class Main {
         command.add(javaExec);
         command.add("-classpath");
         command.add(classPath);
-        command.add("-agentlib:hprof=cpu=samples,depth=25,thread=y,interval=10,file=final_result_cpu_" + now + "_" + ++clientIndex + ".log");
+        ++clientIndex;
+        //command.add("-agentlib:hprof=cpu=samples,depth=25,thread=y,interval=10,file=final_result_cpu_" + now + "_" + clientIndex + ".log");
         command.add("nbm.client.Client");
         boolean useAvailableHosts = true;
         for (String conf : clientConfig.split(CLIENT_CONF_REGEX)) {
@@ -174,8 +176,12 @@ class Main {
               String inputLine;
               while((inputLine = is.readLine()) != null) {
                 System.out.println("From client process : " + inputLine);
-                if (inputLine.startsWith(RES_PREFIX)) {
-                  resWriter.write(ci + "," + inputLine.substring(RES_PREFIX.length()));
+                if (inputLine.startsWith(CONF_PREFIX)) {
+                  resWriter.write(ci + "," + inputLine.substring(CONF_PREFIX.length()));
+                  resWriter.flush();
+                }
+                else if (inputLine.startsWith(RES_PREFIX)) {
+                  resWriter.write("," + inputLine.substring(RES_PREFIX.length()));
                   resWriter.newLine();
                   resWriter.flush();
                 }
@@ -190,7 +196,7 @@ class Main {
         if (!clientProcess.waitFor(CLIENT_PROCESS_TIMEOUT, TimeUnit.SECONDS)) {
           clientProcess.destroy();
           inputStream.close();
-          resWriter.write(clientIndex + ",fail,fail,fail,fail,fail,fail,fail,fail,fail,fail,fail");
+          resWriter.write(clientIndex + ",fail,fail,fail,fail,fail,fail,fail");
           resWriter.newLine();
           resWriter.flush();
         }
