@@ -124,8 +124,9 @@ class Main {
     final String RES_PREFIX = "FINAL RESULT CSV : ";
     long now = System.currentTimeMillis();
     BufferedWriter resWriter = new BufferedWriter(new FileWriter("final_result_" + now + ".csv", true));
-    resWriter.write("TestNumber,NumClients,MessageSize(Bytes),Duration(Sec),LatencyDruation(Sec),MessagesSent,Throughput(MegaBits/Sec),");
-    resWriter.write("LatencyMessagesSent,MinLatency(MS),MaxLatency(MS),MedianLatency(MS),AverageLatency(MS)");
+    resWriter.write("TestNumber,NumClients,MessageSize(Bytes),Duration(Sec),LatencyDruation(Sec),MessagesSent,");
+    resWriter.write("Throughput(MegaBits/Sec),LatencyMessagesSent,MinLatency(MS),MaxLatency(MS),MedianLatency(MS),");
+    resWriter.write("1PercentileLatency,99PercentileLatency,25PercentileLatency,75PercentileLatency,AverageLatency(MS)");
     resWriter.newLine();
     resWriter.flush();
     String availableHosts = new String("");

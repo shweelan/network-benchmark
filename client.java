@@ -120,22 +120,14 @@ class Result {
   private long duration;
   private long msgSent;
   private long latencyDruation;
-  private long minLatency;
-  private long maxLatency;
-  private long medianLatency;
-  private float averageLatency;
-  private long latencyMsgSent;
+  private ArrayList<Long> latencies;
 
-  public Result (String threadName, long duration, long msgSent, long latencyDruation, long minLatency, long maxLatency, long medianLatency, float averageLatency, long latencyMsgSent) {
+  public Result (String threadName, long duration, long msgSent, long latencyDruation, ArrayList<Long> latencies) {
     this.threadName = threadName;
     this.duration = duration;
     this.msgSent = msgSent;
     this.latencyDruation = latencyDruation;
-    this.minLatency = minLatency;
-    this.maxLatency = maxLatency;
-    this.medianLatency = medianLatency;
-    this.averageLatency = averageLatency;
-    this.latencyMsgSent = latencyMsgSent;
+    this.latencies = latencies;
   }
 
   public String getThreadName() {
@@ -154,38 +146,21 @@ class Result {
     return latencyDruation;
   }
 
-  public long getMinLatency() {
-    return minLatency;
-  }
-
-  public long getMaxLatency() {
-    return maxLatency;
-  }
-
-  public long getMedianLatency() {
-    return medianLatency;
-  }
-
-  public float getAverageLatency() {
-    return averageLatency;
+  public ArrayList<Long> getLatencies() {
+    return latencies;
   }
 
   public long getLatencyMsgSent() {
-    return latencyMsgSent;
+    return latencies.size();
   }
 
-
   public String toString() {
-    String[] list = new String[9];
+    String[] list = new String[5];
     list[0] = "Thread " + threadName;
     list[1] = "Took " + String.valueOf(duration);
     list[2] = "Messages sent " + String.valueOf(msgSent) + " Messages";
     list[3] = "Latency test took " + String.valueOf(latencyDruation);
-    list[4] = "Min latency " + String.valueOf(minLatency);
-    list[5] = "Max latency " + String.valueOf(maxLatency);
-    list[6] = "Median latency " + String.valueOf(medianLatency);
-    list[7] = "Average latency " + String.valueOf(averageLatency);
-    list[8] = "Latency messages sent " + String.valueOf(latencyMsgSent);
+    list[4] = "Latency messages sent " + String.valueOf(latencies.size());
     String str = String.join(", ", list);
     return str;
   }
@@ -258,21 +233,6 @@ class ClientWorker implements Runnable {
           break;
         }
       }
-      List<Long> latencies = new ArrayList<Long>(roundTripTimes.values());
-      Collections.sort(latencies);
-      long minLatency = latencies.get(0);
-      long maxLatency = latencies.get(latencies.size() - 1);
-      int mid = latencies.size() / 2;
-      long medianLatency = latencies.get(mid) + ((latencies.size() % 2 == 0) ? latencies.get(mid - 1): 0);
-      long sum = 0;
-      for(Long latency : latencies) {
-        sum += latency;
-      }
-      float averageLatency = sum / (float) latencies.size();
-      roundTripTimes.clear();
-      latencies.clear();
-
-      System.out.println("LATENCY: min: " + minLatency + ", max: " + maxLatency + ", median: " + medianLatency + ", average: " + averageLatency);
 
       String chunk = ((Config.getUseDownlink()) ? "[-usedownlink]" : "") + Message.getChunk(Config.getChunkSize(), 'S');
       long duration = Config.getDuration();
@@ -310,7 +270,7 @@ class ClientWorker implements Runnable {
         this.socket.close();
         System.out.println("Client `" + this.id + "` sent " + this.msgCount + " messages!");
         System.out.println("Client `" + this.id + "` disconnected!");
-        Results.add(new Result(Thread.currentThread().getName(), duration, this.msgCount, latencyDruation, minLatency, maxLatency, medianLatency, averageLatency, pings));
+        Results.add(new Result(Thread.currentThread().getName(), duration, this.msgCount, latencyDruation, new ArrayList<Long>(roundTripTimes.values())));
       }
     }
     catch (Exception e) {
@@ -347,37 +307,48 @@ class Client {
       thread.join();
     }
     long msgSent = 0;
-    long minLatency = Long.MAX_VALUE;
-    long maxLatency = 0;
-    List<Long> medianLatencies = new ArrayList<Long>();
-    List<Float> averageLatencies = new ArrayList<Float>();
     long latencyMsgSent = 0;
+    ArrayList<Long> latencies = new ArrayList<Long>();
     for (Result r : Results.all()) {
       msgSent += r.getMsgSent();
+      latencies.addAll(r.getLatencies());
       latencyMsgSent += r.getLatencyMsgSent();
-      minLatency = Math.min(minLatency, r.getMinLatency());
-      maxLatency = Math.max(maxLatency, r.getMaxLatency());
-      medianLatencies.add(r.getMedianLatency());
-      averageLatencies.add(r.getAverageLatency());
       System.out.println(r);
     }
-    Collections.sort(medianLatencies);
-    // NOTE this is not overall median; it is median of median.
-    int mid = medianLatencies.size() / 2;
-    long medianLatency = medianLatencies.get(mid) + ((medianLatencies.size() % 2 == 0) ? medianLatencies.get(mid - 1): 0);
-    float sum = 0;
-    for(Float avgLatency : averageLatencies) {
-      sum += avgLatency;
-    }
-    float averageLatency = sum / averageLatencies.size();
     float throughput = ((8 * Config.getChunkSize() * msgSent) / (float) (Config.getDuration() / 1000)) / (float) (1024 * 1024); // 1 byte = 8 bit
+    Collections.sort(latencies);
+    long sum = 0;
+    for(Long latency : latencies) {
+      sum += latency;
+    }
+    float averageLatency = sum / (float) latencies.size();
+    long minLatency = latencies.get(0);
+    long maxLatency = latencies.get(latencies.size() - 1);
+    int mid = latencies.size() / 2;
+    long medianLatency = latencies.get(mid);
+    if (latencies.size() % 2 == 0) {
+      medianLatency += latencies.get(mid - 1);
+      medianLatency /= 2;
+    }
+    int percentile1Idx = latencies.size() / 100;
+    long percentile1Latency = latencies.get(percentile1Idx);
+    int percentile99Idx = latencies.size() * 99 / 100;
+    long percentile99Latency = latencies.get(percentile99Idx);
+    int percentile25Idx = latencies.size() / 4;
+    long percentile25Latency = latencies.get(percentile25Idx);
+    int percentile75Idx = latencies.size() * 3 / 4;
+    long percentile75Latency = latencies.get(percentile75Idx);
     System.out.print("FINAL RESULT CSV : ");
     System.out.print(msgSent + ",");
     System.out.print(throughput + ",");
     System.out.print(latencyMsgSent + ",");
-    System.out.print(minLatency+ ",");
-    System.out.print(maxLatency+ ",");
-    System.out.print(medianLatency+ ",");
+    System.out.print(minLatency + ",");
+    System.out.print(maxLatency + ",");
+    System.out.print(medianLatency + ",");
+    System.out.print(percentile1Latency + ",");
+    System.out.print(percentile99Latency + ",");
+    System.out.print(percentile25Latency + ",");
+    System.out.print(percentile75Latency + ",");
     System.out.println(averageLatency);
   }
 }
