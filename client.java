@@ -238,6 +238,7 @@ class ClientWorker implements Runnable {
       long duration = Config.getDuration();
       long delayBetweenChunks = Config.getDelayBetweenChunks();
       endTs = this.initTs + latencyDruation + duration;
+      long SLEEP_THRESHOLD = 1024 * 1024 * 100; // sleep every 100 MB
       try {
         while((currentTs = System.currentTimeMillis()) < endTs) {
           String id = this.id + '_' + String.valueOf(++this.msgCount);
@@ -255,6 +256,9 @@ class ClientWorker implements Runnable {
 
           if (delayBetweenChunks > 0) {
             Thread.sleep(delayBetweenChunks);
+          }
+          else if ((this.msgCount * Config.getChunkSize()) % SLEEP_THRESHOLD == 0) {
+            Thread.sleep(1);
           }
           // ignoring the input to protect the OS from freezing
           while (inputStream.ready()) {

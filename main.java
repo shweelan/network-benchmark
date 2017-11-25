@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.URLClassLoader;
 import java.net.InetAddress;
 import java.util.*;
+import java.lang.reflect.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -145,6 +146,7 @@ class Main {
     int clientIndex = 0;
     for (String clientConfig : clients) {
       Process clientProcess = null;
+      Process topProcess = null;
       BufferedReader inputStream = null;
       Thread thread = null;
       try {
@@ -168,6 +170,22 @@ class Main {
         }
         ProcessBuilder builder = new ProcessBuilder(command);
         clientProcess = builder.start();
+        Field field = clientProcess.getClass().getDeclaredField("pid");
+        field.setAccessible(true);
+        int pid = field.getInt(clientProcess);
+        System.out.println();
+        command.clear();
+        command.add("sh");
+        if (System.getProperty("os.name").equals("Mac OS X")) {
+          command.add("top_osx.sh");
+        }
+        else {
+          command.add("top.sh");
+        }
+        command.add(String.valueOf(pid));
+        command.add("./final_result_cpu_" + now + "_" + clientIndex + ".log");
+        ProcessBuilder topBuilder = new ProcessBuilder(command);
+        topProcess = topBuilder.start();
         inputStream = new BufferedReader(new InputStreamReader(clientProcess.getInputStream()));
         final BufferedReader is = inputStream;
         final int ci = clientIndex;
@@ -197,6 +215,7 @@ class Main {
         if (!clientProcess.waitFor(CLIENT_PROCESS_TIMEOUT, TimeUnit.SECONDS)) {
           clientProcess.destroy();
           inputStream.close();
+          topProcess.destroy();
           resWriter.write(clientIndex + ",fail,fail,fail,fail,fail,fail,fail");
           resWriter.newLine();
           resWriter.flush();
@@ -210,6 +229,9 @@ class Main {
         if (clientProcess != null) {
           inputStream.close();
           clientProcess.destroy();
+        }
+        if (topProcess != null) {
+          topProcess.destroy();
         }
       }
     }
