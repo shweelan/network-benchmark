@@ -124,7 +124,9 @@ class Main {
     final String CONF_PREFIX = "CONFIG CSV : ";
     final String RES_PREFIX = "FINAL RESULT CSV : ";
     long now = System.currentTimeMillis();
-    BufferedWriter resWriter = new BufferedWriter(new FileWriter("final_result_" + now + ".csv", true));
+    File dir = new File("results_" + now);
+    dir.mkdir();
+    BufferedWriter resWriter = new BufferedWriter(new FileWriter("./results_" + now + "/final_result_" + now + ".csv", true));
     resWriter.write("TestNumber,NumClients,MessageSize(Bytes),Duration(Sec),LatencyDruation(Sec),MessagesSent,");
     resWriter.write("Throughput(MegaBits/Sec),LatencyMessagesSent,MinLatency(MS),MaxLatency(MS),MedianLatency(MS),");
     resWriter.write("1PercentileLatency,99PercentileLatency,25PercentileLatency,75PercentileLatency,AverageLatency(MS)");
@@ -183,7 +185,7 @@ class Main {
           command.add("top.sh");
         }
         command.add(String.valueOf(pid));
-        command.add("./final_result_cpu_" + now + "_" + clientIndex + ".log");
+        command.add("./results_" + now + "/final_result_cpu_" + now + "_" + clientIndex + ".log");
         ProcessBuilder topBuilder = new ProcessBuilder(command);
         topProcess = topBuilder.start();
         inputStream = new BufferedReader(new InputStreamReader(clientProcess.getInputStream()));
