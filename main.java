@@ -14,10 +14,12 @@ class Main {
   private static final String ALIVE_SERVER_CONF_ID = new String("ALIVE_SERVER:");
   private static final String SERVER_CONF_ID = new String("SERVER:");
   private static final String CLIENT_CONF_ID = new String("CLIENT:");
+  private static final String RESULTS_PREFIX_ID = new String("RESULTS_PREFIX:");
   private static final int CLIENT_PROCESS_TIMEOUT = 90; //SECONDS
 
   public static void main(String args[]) throws Exception {
     // read config file
+    String resultsPrefix = new String("");
     File file = new File(args[0]);
     BufferedReader fileStream = new BufferedReader(new FileReader(file));
     String configLine;
@@ -33,6 +35,9 @@ class Main {
       }
       else if (configLine.toUpperCase().startsWith(CLIENT_CONF_ID)) {
         clients.add(configLine.substring(CLIENT_CONF_ID.length()).trim());
+      }
+      else if (configLine.toUpperCase().startsWith(RESULTS_PREFIX_ID)) {
+        resultsPrefix = configLine.substring(RESULTS_PREFIX_ID.length()).trim();
       }
       else {
         System.out.println("Bad Config line, `" + configLine + "` !");
@@ -124,7 +129,7 @@ class Main {
     final String CONF_PREFIX = "CONFIG CSV : ";
     final String RES_PREFIX = "FINAL RESULT CSV : ";
     long now = System.currentTimeMillis();
-    String resultsPath = new String("./results/results_" + now);
+    String resultsPath = new String("./results/" + (resultsPrefix.isEmpty() ? "" : resultsPrefix + "_") + "results_" + now);
     File dir = new File(resultsPath);
     dir.mkdir();
     BufferedWriter resWriter = new BufferedWriter(new FileWriter(resultsPath + "/final_result_" + now + ".csv", true));
