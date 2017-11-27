@@ -1,0 +1,519 @@
+top - 01:05:41 up  3:06,  2 users,  load average: 16.96, 13.55, 13.52
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 14.8%us,  1.9%sy,  0.0%ni, 80.1%id,  0.0%wa,  0.0%hi,  3.2%si,  0.0%st
+Mem:  31900568k total,   591476k used, 31309092k free,    25136k buffers
+Swap:        0k total,        0k used,        0k free,   135280k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.5g 171m  15m S 1168.5  0.6   0:05.85 java             
+
+
+top - 01:05:42 up  3:06,  2 users,  load average: 16.96, 13.55, 13.52
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 90.8%us,  0.6%sy,  0.0%ni,  8.4%id,  0.0%wa,  0.0%hi,  0.3%si,  0.0%st
+Mem:  31900568k total,   749604k used, 31150964k free,    25136k buffers
+Swap:        0k total,        0k used,        0k free,   135284k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.6g 292m  15m S 1466.9  0.9   0:20.54 java             
+
+
+top - 01:05:43 up  3:06,  2 users,  load average: 21.20, 14.49, 13.82
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 92.8%us,  1.4%sy,  0.0%ni,  4.9%id,  0.0%wa,  0.0%hi,  0.9%si,  0.0%st
+Mem:  31900568k total,  1116096k used, 30784472k free,    25136k buffers
+Swap:        0k total,        0k used,        0k free,   135284k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.1g 486m  15m S 1518.0  1.6   0:35.74 java             
+
+
+top - 01:05:44 up  3:06,  2 users,  load average: 21.20, 14.49, 13.82
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 94.0%us,  1.4%sy,  0.0%ni,  3.7%id,  0.0%wa,  0.0%hi,  0.8%si,  0.0%st
+Mem:  31900568k total,  1462240k used, 30438328k free,    25136k buffers
+Swap:        0k total,        0k used,        0k free,   135284k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.1g 732m  15m S 1539.5  2.4   0:51.16 java             
+
+
+top - 01:05:45 up  3:06,  2 users,  load average: 21.20, 14.49, 13.82
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 75.0%us,  7.2%sy,  0.0%ni, 15.7%id,  0.0%wa,  0.0%hi,  2.0%si,  0.0%st
+Mem:  31900568k total,  2421956k used, 29478612k free,    25136k buffers
+Swap:        0k total,        0k used,        0k free,   135284k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 1.6g  15m S 1347.8  5.4   1:04.68 java             
+
+
+top - 01:05:46 up  3:06,  2 users,  load average: 21.20, 14.49, 13.82
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 44.7%us, 12.2%sy,  0.0%ni, 29.7%id,  0.0%wa,  0.0%hi, 13.4%si,  0.0%st
+Mem:  31900568k total,  3816496k used, 28084072k free,    25144k buffers
+Swap:        0k total,        0k used,        0k free,   135284k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 2.9g  15m S 1042.4  9.6   1:15.12 java             
+
+
+top - 01:05:47 up  3:06,  2 users,  load average: 21.20, 14.49, 13.82
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 61.6%us,  7.6%sy,  0.0%ni, 23.2%id,  0.0%wa,  0.0%hi,  7.6%si,  0.0%st
+Mem:  31900568k total,  3786816k used, 28113752k free,    25144k buffers
+Swap:        0k total,        0k used,        0k free,   135284k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 2.9g  15m S 1149.7  9.6   1:26.64 java             
+
+
+top - 01:05:48 up  3:06,  2 users,  load average: 32.72, 16.99, 14.63
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 82.5%us, 16.5%sy,  0.0%ni,  0.8%id,  0.0%wa,  0.0%hi,  0.3%si,  0.0%st
+Mem:  31900568k total,  3815716k used, 28084852k free,    25144k buffers
+Swap:        0k total,        0k used,        0k free,   135284k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 2.9g  15m S 1559.7  9.6   1:42.26 java             
+
+
+top - 01:05:49 up  3:06,  2 users,  load average: 32.72, 16.99, 14.63
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 81.6%us,  9.0%sy,  0.0%ni,  2.0%id,  0.0%wa,  0.0%hi,  7.4%si,  0.0%st
+Mem:  31900568k total,  3810028k used, 28090540k free,    25144k buffers
+Swap:        0k total,        0k used,        0k free,   135288k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 2.9g  15m S 1550.7  9.6   1:57.87 java             
+
+
+top - 01:05:50 up  3:06,  2 users,  load average: 32.72, 16.99, 14.63
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 77.8%us, 11.8%sy,  0.0%ni,  2.0%id,  0.0%wa,  0.0%hi,  8.4%si,  0.0%st
+Mem:  31900568k total,  3807136k used, 28093432k free,    25144k buffers
+Swap:        0k total,        0k used,        0k free,   135288k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.0g  15m S 1550.7  9.8   2:13.40 java             
+
+
+top - 01:05:51 up  3:06,  2 users,  load average: 32.72, 16.99, 14.63
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 50.3%us, 23.2%sy,  0.0%ni, 17.4%id,  0.0%wa,  0.0%hi,  9.2%si,  0.0%st
+Mem:  31900568k total,  3878804k used, 28021764k free,    25144k buffers
+Swap:        0k total,        0k used,        0k free,   135288k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.0g  15m S 1267.2 10.0   2:26.09 java             
+
+
+top - 01:05:52 up  3:06,  2 users,  load average: 32.72, 16.99, 14.63
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 30.9%us, 14.9%sy,  0.0%ni, 46.8%id,  0.0%wa,  0.0%hi,  7.3%si,  0.0%st
+Mem:  31900568k total,  3878756k used, 28021812k free,    25152k buffers
+Swap:        0k total,        0k used,        0k free,   135288k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.0g  15m S 773.3 10.0   2:33.83 java              
+
+
+top - 01:05:53 up  3:06,  2 users,  load average: 30.34, 16.75, 14.57
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s): 20.4%us,  9.2%sy,  0.0%ni, 64.7%id,  0.0%wa,  0.0%hi,  5.7%si,  0.0%st
+Mem:  31900568k total,  3879628k used, 28020940k free,    25152k buffers
+Swap:        0k total,        0k used,        0k free,   135288k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.0g  15m S 488.2 10.0   2:38.72 java              
+
+
+top - 01:05:54 up  3:06,  2 users,  load average: 30.34, 16.75, 14.57
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  9.0%us,  3.1%sy,  0.0%ni, 82.0%id,  0.0%wa,  0.0%hi,  6.0%si,  0.0%st
+Mem:  31900568k total,  3893132k used, 28007436k free,    25152k buffers
+Swap:        0k total,        0k used,        0k free,   135288k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 207.7 10.1   2:40.80 java              
+
+
+top - 01:05:55 up  3:06,  2 users,  load average: 30.34, 16.75, 14.57
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.8%us,  1.5%sy,  0.0%ni, 84.3%id,  0.0%wa,  0.0%hi,  7.4%si,  0.0%st
+Mem:  31900568k total,  3892188k used, 28008380k free,    25152k buffers
+Swap:        0k total,        0k used,        0k free,   135288k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 134.8 10.1   2:42.15 java              
+
+
+top - 01:05:56 up  3:06,  2 users,  load average: 30.34, 16.75, 14.57
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.3%us,  1.0%sy,  0.0%ni, 84.5%id,  0.0%wa,  0.0%hi,  8.1%si,  0.0%st
+Mem:  31900568k total,  3907644k used, 27992924k free,    25152k buffers
+Swap:        0k total,        0k used,        0k free,   135288k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.8 10.1   2:43.53 java              
+
+
+top - 01:05:57 up  3:06,  2 users,  load average: 30.34, 16.75, 14.57
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.6%us,  1.1%sy,  0.0%ni, 83.7%id,  0.0%wa,  0.0%hi,  8.6%si,  0.0%st
+Mem:  31900568k total,  3908312k used, 27992256k free,    25152k buffers
+Swap:        0k total,        0k used,        0k free,   135292k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 136.8 10.1   2:44.90 java              
+
+
+top - 01:05:58 up  3:06,  2 users,  load average: 27.91, 16.47, 14.49
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  5.4%us,  1.5%sy,  0.0%ni, 86.4%id,  0.1%wa,  0.0%hi,  6.6%si,  0.0%st
+Mem:  31900568k total,  3921068k used, 27979500k free,    25160k buffers
+Swap:        0k total,        0k used,        0k free,   135292k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.8 10.1   2:46.28 java              
+
+
+top - 01:05:59 up  3:06,  2 users,  load average: 27.91, 16.47, 14.49
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.8%us,  1.4%sy,  0.0%ni, 85.1%id,  0.0%wa,  0.0%hi,  6.7%si,  0.0%st
+Mem:  31900568k total,  3920836k used, 27979732k free,    25160k buffers
+Swap:        0k total,        0k used,        0k free,   135292k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.8 10.1   2:47.66 java              
+
+
+top - 01:06:00 up  3:06,  2 users,  load average: 27.91, 16.47, 14.49
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  5.7%us,  0.9%sy,  0.0%ni, 86.1%id,  0.0%wa,  0.0%hi,  7.3%si,  0.0%st
+Mem:  31900568k total,  3925036k used, 27975532k free,    25160k buffers
+Swap:        0k total,        0k used,        0k free,   135292k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.8 10.1   2:49.04 java              
+
+
+top - 01:06:01 up  3:06,  2 users,  load average: 27.91, 16.47, 14.49
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  5.7%us,  1.2%sy,  0.0%ni, 85.6%id,  0.0%wa,  0.0%hi,  7.5%si,  0.0%st
+Mem:  31900568k total,  3930072k used, 27970496k free,    25160k buffers
+Swap:        0k total,        0k used,        0k free,   135292k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 138.8 10.2   2:50.43 java              
+
+
+top - 01:06:02 up  3:06,  2 users,  load average: 27.91, 16.47, 14.49
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.7%us,  1.2%sy,  0.0%ni, 84.7%id,  0.0%wa,  0.0%hi,  7.4%si,  0.0%st
+Mem:  31900568k total,  3931880k used, 27968688k free,    25160k buffers
+Swap:        0k total,        0k used,        0k free,   135292k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.8 10.2   2:51.81 java              
+
+
+top - 01:06:03 up  3:06,  2 users,  load average: 25.75, 16.22, 14.42
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.0%us,  1.7%sy,  0.0%ni, 85.6%id,  0.0%wa,  0.0%hi,  6.8%si,  0.0%st
+Mem:  31900568k total,  3936344k used, 27964224k free,    25160k buffers
+Swap:        0k total,        0k used,        0k free,   135292k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 136.8 10.2   2:53.18 java              
+
+
+top - 01:06:04 up  3:06,  2 users,  load average: 25.75, 16.22, 14.42
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.0%us,  1.2%sy,  0.0%ni, 85.4%id,  0.0%wa,  0.0%hi,  7.3%si,  0.0%st
+Mem:  31900568k total,  3937496k used, 27963072k free,    25168k buffers
+Swap:        0k total,        0k used,        0k free,   135292k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.8 10.2   2:54.56 java              
+
+
+top - 01:06:05 up  3:06,  2 users,  load average: 25.75, 16.22, 14.42
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  5.7%us,  1.3%sy,  0.0%ni, 84.8%id,  0.0%wa,  0.0%hi,  8.2%si,  0.0%st
+Mem:  31900568k total,  3945740k used, 27954828k free,    25168k buffers
+Swap:        0k total,        0k used,        0k free,   135296k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 146.8 10.2   2:56.03 java              
+
+
+top - 01:06:06 up  3:06,  2 users,  load average: 25.75, 16.22, 14.42
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  5.9%us,  1.2%sy,  0.0%ni, 84.9%id,  0.0%wa,  0.0%hi,  7.9%si,  0.0%st
+Mem:  31900568k total,  3948508k used, 27952060k free,    25168k buffers
+Swap:        0k total,        0k used,        0k free,   135296k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 135.8 10.2   2:57.39 java              
+
+
+top - 01:06:07 up  3:06,  2 users,  load average: 25.75, 16.22, 14.42
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  5.6%us,  1.2%sy,  0.0%ni, 86.4%id,  0.0%wa,  0.0%hi,  6.8%si,  0.1%st
+Mem:  31900568k total,  3948188k used, 27952380k free,    25168k buffers
+Swap:        0k total,        0k used,        0k free,   135296k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.8 10.2   2:58.77 java              
+
+
+top - 01:06:08 up  3:06,  2 users,  load average: 23.77, 15.96, 14.35
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.4%us,  1.2%sy,  0.0%ni, 84.6%id,  0.0%wa,  0.0%hi,  7.8%si,  0.0%st
+Mem:  31900568k total,  3954684k used, 27945884k free,    25168k buffers
+Swap:        0k total,        0k used,        0k free,   135296k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 135.8 10.2   3:00.13 java              
+
+
+top - 01:06:09 up  3:06,  2 users,  load average: 23.77, 15.96, 14.35
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  5.7%us,  1.0%sy,  0.0%ni, 86.0%id,  0.0%wa,  0.0%hi,  7.3%si,  0.0%st
+Mem:  31900568k total,  3953308k used, 27947260k free,    25168k buffers
+Swap:        0k total,        0k used,        0k free,   135296k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.9 10.2   3:01.51 java              
+
+
+top - 01:06:10 up  3:06,  2 users,  load average: 23.77, 15.96, 14.35
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.8%us,  1.3%sy,  0.0%ni, 84.9%id,  0.0%wa,  0.0%hi,  7.0%si,  0.0%st
+Mem:  31900568k total,  3961532k used, 27939036k free,    25176k buffers
+Swap:        0k total,        0k used,        0k free,   135296k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 137.8 10.2   3:02.89 java              
+
+
+top - 01:06:11 up  3:06,  2 users,  load average: 23.77, 15.96, 14.35
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.6%us,  1.6%sy,  0.0%ni, 83.6%id,  0.0%wa,  0.0%hi,  8.2%si,  0.0%st
+Mem:  31900568k total,  3962748k used, 27937820k free,    25176k buffers
+Swap:        0k total,        0k used,        0k free,   135296k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 151.8 10.2   3:04.41 java              
+
+
+top - 01:06:12 up  3:06,  2 users,  load average: 23.77, 15.96, 14.35
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.0%us,  1.2%sy,  0.0%ni, 84.1%id,  0.0%wa,  0.0%hi,  8.8%si,  0.0%st
+Mem:  31900568k total,  3967808k used, 27932760k free,    25176k buffers
+Swap:        0k total,        0k used,        0k free,   135296k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 142.8 10.3   3:05.84 java              
+
+
+top - 01:06:13 up  3:06,  2 users,  load average: 22.11, 15.75, 14.29
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.2%us,  1.2%sy,  0.0%ni, 85.5%id,  0.0%wa,  0.0%hi,  7.1%si,  0.0%st
+Mem:  31900568k total,  3968864k used, 27931704k free,    25176k buffers
+Swap:        0k total,        0k used,        0k free,   135300k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 141.8 10.3   3:07.26 java              
+
+
+top - 01:06:14 up  3:06,  2 users,  load average: 22.11, 15.75, 14.29
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.4%us,  1.3%sy,  0.0%ni, 84.0%id,  0.0%wa,  0.0%hi,  8.2%si,  0.0%st
+Mem:  31900568k total,  3971212k used, 27929356k free,    25176k buffers
+Swap:        0k total,        0k used,        0k free,   135300k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 143.8 10.3   3:08.70 java              
+
+
+top - 01:06:15 up  3:06,  2 users,  load average: 22.11, 15.75, 14.29
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.3%us,  1.0%sy,  0.0%ni, 84.9%id,  0.0%wa,  0.0%hi,  7.7%si,  0.0%st
+Mem:  31900568k total,  3973644k used, 27926924k free,    25176k buffers
+Swap:        0k total,        0k used,        0k free,   135300k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 143.9 10.3   3:10.14 java              
+
+
+top - 01:06:16 up  3:06,  2 users,  load average: 22.11, 15.75, 14.29
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.4%us,  1.4%sy,  0.0%ni, 83.8%id,  0.0%wa,  0.0%hi,  8.4%si,  0.0%st
+Mem:  31900568k total,  3979736k used, 27920832k free,    25184k buffers
+Swap:        0k total,        0k used,        0k free,   135300k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 143.8 10.3   3:11.58 java              
+
+
+top - 01:06:17 up  3:06,  2 users,  load average: 22.11, 15.75, 14.29
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.5%us,  1.4%sy,  0.0%ni, 82.1%id,  0.0%wa,  0.0%hi, 10.0%si,  0.0%st
+Mem:  31900568k total,  3977512k used, 27923056k free,    25184k buffers
+Swap:        0k total,        0k used,        0k free,   135300k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 145.8 10.3   3:13.04 java              
+
+
+top - 01:06:18 up  3:06,  2 users,  load average: 20.34, 15.49, 14.21
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  7.3%us,  1.2%sy,  0.0%ni, 84.8%id,  0.0%wa,  0.0%hi,  6.7%si,  0.0%st
+Mem:  31900568k total,  3980984k used, 27919584k free,    25184k buffers
+Swap:        0k total,        0k used,        0k free,   135300k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 141.9 10.3   3:14.46 java              
+
+
+top - 01:06:19 up  3:06,  2 users,  load average: 20.34, 15.49, 14.21
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.4%us,  1.5%sy,  0.0%ni, 84.7%id,  0.0%wa,  0.0%hi,  7.4%si,  0.0%st
+Mem:  31900568k total,  3979752k used, 27920816k free,    25184k buffers
+Swap:        0k total,        0k used,        0k free,   135300k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 142.8 10.3   3:15.89 java              
+
+
+top - 01:06:20 up  3:06,  2 users,  load average: 20.34, 15.49, 14.21
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.4%us,  1.1%sy,  0.0%ni, 83.9%id,  0.0%wa,  0.0%hi,  8.7%si,  0.0%st
+Mem:  31900568k total,  3983228k used, 27917340k free,    25184k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 142.8 10.3   3:17.32 java              
+
+
+top - 01:06:21 up  3:06,  2 users,  load average: 20.34, 15.49, 14.21
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  6.2%us,  1.1%sy,  0.0%ni, 84.9%id,  0.0%wa,  0.0%hi,  7.8%si,  0.0%st
+Mem:  31900568k total,  3983772k used, 27916796k free,    25192k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 18.3g 3.1g  15m S 143.9 10.3   3:18.76 java              
+
+
+top - 01:06:22 up  3:06,  2 users,  load average: 20.34, 15.49, 14.21
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  3.0%us,  1.0%sy,  0.0%ni, 91.0%id,  0.0%wa,  0.0%hi,  5.0%si,  0.0%st
+Mem:  31900568k total,  3758904k used, 28141664k free,    25192k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.4g 3.2g  15m S 72.9 10.4   3:19.49 java               
+
+
+top - 01:06:23 up  3:06,  2 users,  load average: 18.71, 15.23, 14.13
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.1%us,  0.0%sy,  0.0%ni, 99.9%id,  0.0%wa,  0.0%hi,  0.1%si,  0.0%st
+Mem:  31900568k total,  3730960k used, 28169608k free,    25192k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.4g 3.2g  15m S  1.0 10.4   3:19.50 java               
+
+
+top - 01:06:24 up  3:07,  2 users,  load average: 18.71, 15.23, 14.13
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.0%us,  0.0%sy,  0.0%ni,100.0%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3727588k used, 28172980k free,    25192k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
+
+top - 01:06:25 up  3:07,  2 users,  load average: 18.71, 15.23, 14.13
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.1%us,  0.0%sy,  0.0%ni, 99.9%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3721568k used, 28179000k free,    25192k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
+
+top - 01:06:26 up  3:07,  2 users,  load average: 18.71, 15.23, 14.13
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.0%us,  0.0%sy,  0.0%ni,100.0%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3721140k used, 28179428k free,    25192k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
+
+top - 01:06:27 up  3:07,  2 users,  load average: 18.71, 15.23, 14.13
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.0%us,  0.0%sy,  0.0%ni,100.0%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3720824k used, 28179744k free,    25200k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
+
+top - 01:06:28 up  3:07,  2 users,  load average: 17.21, 14.98, 14.06
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.0%us,  0.0%sy,  0.0%ni,100.0%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3720540k used, 28180028k free,    25200k buffers
+Swap:        0k total,        0k used,        0k free,   135304k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
+
+top - 01:06:29 up  3:07,  2 users,  load average: 17.21, 14.98, 14.06
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.0%us,  0.0%sy,  0.0%ni,100.0%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3720232k used, 28180336k free,    25200k buffers
+Swap:        0k total,        0k used,        0k free,   135308k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
+
+top - 01:06:30 up  3:07,  2 users,  load average: 17.21, 14.98, 14.06
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.0%us,  0.0%sy,  0.0%ni,100.0%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3720232k used, 28180336k free,    25200k buffers
+Swap:        0k total,        0k used,        0k free,   135308k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
+
+top - 01:06:31 up  3:07,  2 users,  load average: 17.21, 14.98, 14.06
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.0%us,  0.0%sy,  0.0%ni,100.0%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3720232k used, 28180336k free,    25200k buffers
+Swap:        0k total,        0k used,        0k free,   135308k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
+
+top - 01:06:32 up  3:07,  2 users,  load average: 17.21, 14.98, 14.06
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.0%us,  0.0%sy,  0.0%ni,100.0%id,  0.0%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  31900568k total,  3720192k used, 28180376k free,    25200k buffers
+Swap:        0k total,        0k used,        0k free,   135308k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND            
+29656 ec2-user  20   0 17.3g 3.2g  15m S  0.0 10.4   3:19.50 java               
+
