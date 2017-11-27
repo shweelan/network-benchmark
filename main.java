@@ -224,7 +224,7 @@ class Main {
           clientProcess.destroy();
           inputStream.close();
           topProcess.destroy();
-          resWriter.write(clientIndex + ",fail,fail,fail,fail,fail,fail,fail");
+          resWriter.write(",fail,fail,fail,fail,fail,fail,fail");
           resWriter.newLine();
           resWriter.flush();
         }
