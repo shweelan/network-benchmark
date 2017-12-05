@@ -26,7 +26,6 @@ public class cpuResultSanitizer {
 					Long testId1 = Long.valueOf(split[split.length - 1].replace(".log", ""));
 					split = f2.getName().split("_");
 					Long testId2 = Long.valueOf(split[split.length - 1].replace(".log", ""));
-					System.out.println(testId1 + " " + testId2);
 		  		return Long.valueOf(testId1).compareTo(testId2);
 				}
 				catch (Exception e) {
