@@ -4,6 +4,8 @@
  * Date: Dec 5, 2017
  */
 
+// NOTE ls -1 results/ | grep "conf\|^results"  |xargs -L1 -I {} java -classpath build/ nbm.common.cpuResultSanitizer results/{}
+
 package nbm.common;
 import java.io.*;
 import java.util.*;
@@ -11,9 +13,27 @@ import java.util.*;
 public class cpuResultSanitizer {
 
   public static void main(String[] args) throws IOException {
+		System.out.println(args[0]);
 		File inputDir = new File(args[0]);
     String logOutputDir = args[0];
     File[] files = inputDir.listFiles();
+		Arrays.sort(files, new Comparator<File>() {
+		  public int compare(File f1, File f2)
+		  {
+				try {
+					String[] split;
+					split = f1.getName().split("_");
+					Long testId1 = Long.valueOf(split[split.length - 1].replace(".log", ""));
+					split = f2.getName().split("_");
+					Long testId2 = Long.valueOf(split[split.length - 1].replace(".log", ""));
+					System.out.println(testId1 + " " + testId2);
+		  		return Long.valueOf(testId1).compareTo(testId2);
+				}
+				catch (Exception e) {
+					return 0;
+				}
+			}
+		});
     BufferedWriter resultWriter = new BufferedWriter(new FileWriter(logOutputDir + "/final_result_cpu_medians"+ ".csv", true));
     resultWriter.write("TestNumber");
     resultWriter.append(",");
