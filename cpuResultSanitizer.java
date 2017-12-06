@@ -13,26 +13,26 @@ import java.util.*;
 public class cpuResultSanitizer {
 
   public static void main(String[] args) throws IOException {
-		System.out.println(args[0]);
-		File inputDir = new File(args[0]);
+    System.out.println(args[0]);
+    File inputDir = new File(args[0]);
     String logOutputDir = args[0];
     File[] files = inputDir.listFiles();
-		Arrays.sort(files, new Comparator<File>() {
-		  public int compare(File f1, File f2)
-		  {
-				try {
-					String[] split;
-					split = f1.getName().split("_");
-					Long testId1 = Long.valueOf(split[split.length - 1].replace(".log", ""));
-					split = f2.getName().split("_");
-					Long testId2 = Long.valueOf(split[split.length - 1].replace(".log", ""));
-		  		return Long.valueOf(testId1).compareTo(testId2);
-				}
-				catch (Exception e) {
-					return 0;
-				}
-			}
-		});
+    Arrays.sort(files, new Comparator<File>() {
+      public int compare(File f1, File f2)
+      {
+        try {
+          String[] split;
+          split = f1.getName().split("_");
+          Long testId1 = Long.valueOf(split[split.length - 1].replace(".log", ""));
+          split = f2.getName().split("_");
+          Long testId2 = Long.valueOf(split[split.length - 1].replace(".log", ""));
+          return Long.valueOf(testId1).compareTo(testId2);
+        }
+        catch (Exception e) {
+          return -1;
+        }
+      }
+    });
     BufferedWriter resultWriter = new BufferedWriter(new FileWriter(logOutputDir + "/final_result_cpu_medians"+ ".csv", true));
     resultWriter.write("TestNumber");
     resultWriter.append(",");
@@ -41,9 +41,9 @@ public class cpuResultSanitizer {
     resultWriter.write("WholeSysMedian");
     resultWriter.append("\n");
     for(File file : files) {
-			if (file.getName().startsWith("final_result_cpu")) {
-				readCpu(resultWriter, inputDir + "/" + file.getName(), file.getName(), logOutputDir);
-			}
+      if (file.getName().startsWith("final_result_cpu")) {
+        readCpu(resultWriter, inputDir + "/" + file.getName(), file.getName(), logOutputDir);
+      }
     }
     resultWriter.flush();
     resultWriter.close();
@@ -59,15 +59,15 @@ public class cpuResultSanitizer {
         if(logLine.trim().startsWith("Cpu(s)")) {
           wholeSysValues.add(Float.valueOf(logLine.substring(logLine.indexOf("s):") + 4 , logLine.indexOf("%us,")).trim()));
         }
-				else if (logLine.trim().endsWith("java")) {
-					String[] tokens = logLine.trim().replaceAll(" +", " ").split(" ");
+        else if (logLine.trim().endsWith("java")) {
+          String[] tokens = logLine.trim().replaceAll(" +", " ").split(" ");
           jvmValues.add(Float.valueOf(tokens[8]));
         }
       }
       fileStream.close();
-			if (jvmValues.size() == 0 && wholeSysValues.size() == 0) {
-				return;
-			}
+      if (jvmValues.size() == 0 && wholeSysValues.size() == 0) {
+        return;
+      }
       //jvm output --> .log comma separated
       String jvmFilename = fileName.substring(0, fileName.indexOf(".log"));
       jvmFilename = jvmFilename+"_jvm"+ ".log";
@@ -76,12 +76,12 @@ public class cpuResultSanitizer {
       String wholeListFN = fileName.substring(0, fileName.indexOf(".log"));
       wholeListFN = wholeListFN+"_whole_sys" + ".log";
       logWriter(wholeListFN, wholeSysValues, logOutputDir);
-			//get median of jvm values
+      //get median of jvm values
       Float jvmMedian = getMedian(jvmValues);
       //get median of whole sys
       Float wholeMedian = getMedian(wholeSysValues);
       //CSV
-			String[] split = fileName.split("_");
+      String[] split = fileName.split("_");
       resultWriter.append(split[split.length - 1].replace(".log", ""));
       resultWriter.append(",");
       resultWriter.append(String.valueOf(jvmMedian));
@@ -94,9 +94,9 @@ public class cpuResultSanitizer {
   }
 
   public static Float getMedian (ArrayList<Float> floatArrayList){
-		if (floatArrayList.size() == 0) {
-			return new Float(0.0);
-		}
+    if (floatArrayList.size() == 0) {
+      return new Float(0.0);
+    }
     Collections.sort(floatArrayList);
     int mid = floatArrayList.size() / 2;
     Float median = floatArrayList.get(mid);
@@ -109,7 +109,7 @@ public class cpuResultSanitizer {
       BufferedWriter brwhole = new BufferedWriter(new FileWriter(wholeFile));
       for(Float value : filters) {
         brwhole.write(String.valueOf(value));
-				brwhole.newLine();
+        brwhole.newLine();
       }
       brwhole.flush();
       brwhole.close();
